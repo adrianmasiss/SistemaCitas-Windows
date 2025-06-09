@@ -6,7 +6,8 @@ function BuscarCita() {
     const [medicos, setMedicos] = useState([]);
     const [loading, setLoading] = useState(false);
     const [horarios, setHorarios] = useState({});
-    const [verHorarios, setVerHorarios] = useState({}); // Controlar expansión por médico
+    const [verHorarios, setVerHorarios] = useState({}); // { medicoId: true/false }
+    const [verMasDias, setVerMasDias] = useState({}); // { medicoId: { fecha: true/false } }
 
     // Buscar médicos por filtros
     const buscarMedicos = (e) => {
@@ -18,20 +19,16 @@ function BuscarCita() {
         fetch(url)
             .then(async res => {
                 if (!res.ok) throw new Error(await res.text());
-                const ct = res.headers.get('content-type') || '';
-                return ct.includes('application/json') ? res.json() : [];
+                return res.json();
             })
             .then(async data => {
                 setMedicos(data);
-                // Cargar horarios solo para los médicos encontrados (para próximos 3 días)
-                const baseDate = new Date();
                 let horariosMap = {};
                 for (let medico of data) {
-                    const response = await fetch(`/api/horario-extendido?medicoId=${medico.id}&offset=1&dias=3`);                    if (!response.ok) throw new Error(await response.text());
-                    const ct2 = response.headers.get('content-type') || '';
-                    const obj = ct2.includes('application/json') ? await response.json() : {};
+                    const response = await fetch(`/api/horario-extendido?medicoId=${medico.id}&offset=1&dias=3`);
+                    if (!response.ok) throw new Error(await response.text());
+                    const obj = await response.json();
                     const grupos = obj.espaciosAgrupados || [];
-                    // Agrupar slots por fecha
                     let fechas = {};
                     for (const g of grupos) {
                         fechas[g.fecha] = g.slots || [];
@@ -48,7 +45,7 @@ function BuscarCita() {
             });
     };
 
-    // Al montar, buscar todos los médicos aprobados
+    // Buscar todos al cargar
     useEffect(() => {
         buscarMedicos();
         // eslint-disable-next-line
@@ -61,24 +58,19 @@ function BuscarCita() {
         }));
     };
 
-    const verMas = (medicoId, fecha) => {
-        setHorarios(h => {
-            // Mostramos todos los horarios de ese día
-            let nuevos = { ...h };
-            if (!nuevos[medicoId][fecha].some(slot => slot._verMas)) {
-                nuevos[medicoId][fecha] = nuevos[medicoId][fecha].map((slot, idx) => ({ ...slot, _mostrar: true }));
-            } else {
-                nuevos[medicoId][fecha] = nuevos[medicoId][fecha].map((slot, idx) =>
-                    idx < 3 ? { ...slot, _mostrar: true } : { ...slot, _mostrar: false }
-                );
+    // Control individual de ver más/menos por médico y por día
+    const handleVerMas = (medicoId, fecha) => {
+        setVerMasDias(prev => ({
+            ...prev,
+            [medicoId]: {
+                ...prev[medicoId],
+                [fecha]: !prev[medicoId]?.[fecha]
             }
-            return nuevos;
-        });
+        }));
     };
 
     return (
         <div className="layout-wrapper">
-            {/* <Header /> */}
             <div className="contenido-principal">
                 <div className="contenedor">
                     <div className="search-box">
@@ -117,8 +109,8 @@ function BuscarCita() {
                                     <div>
                                         <b style={{ color: "#2c3e50" }}>{medico.nombre}</b>{" "}
                                         <span style={{ color: "#007bff", fontWeight: "bold" }}>
-                      ₡{medico.costoConsulta}
-                    </span>
+                                            ₡{medico.costoConsulta}
+                                        </span>
                                         <br />
                                         <span>💼 <span>{medico.especialidad}</span></span><br />
                                         <span>📍 <span>{medico.localidad}</span></span>
@@ -140,39 +132,43 @@ function BuscarCita() {
                                 )}
                                 {verHorarios[medico.id] && horarios[medico.id] && (
                                     <div className="fechas horarios-toggle" style={{ display: "flex" }}>
-                                        {Object.entries(horarios[medico.id]).map(([fecha, lista]) => (
-                                            <div className="fecha-col" key={fecha}>
-                                                <h4>{fecha.split("-").reverse().join("/")}</h4>
-                                                {lista.length === 0 ? (
-                                                    <p>No se encontraron resultados para tu búsqueda.</p>
-                                                ) : (
-                                                    <>
-                                                        {lista.slice(0, 3).map((slot, idx) =>
-                                                            <div className={`slot ${slot.disponible ? "disponible" : "reservado"}`}>
-                                                                {slot.disponible ? (
-                                                                    <a
-                                                                        href={`/confirmarCita?medicoId=${medico.id}&fechaHora=${slot.fecha}T${slot.hora}`}
-                                                                    >
-                                                                        {slot.horaFormateada || slot.hora}
-                                                                    </a>
-                                                                ) : (
-                                                                    <span>{slot.horaFormateada || slot.hora}</span>
-                                                                )}
-                                                            </div>
-                                                        )}
-                                                        {lista.length > 3 && (
-                                                            <button
-                                                                type="button"
-                                                                className="toggle-button"
-                                                                onClick={() => verMas(medico.id, fecha)}
-                                                            >
-                                                                Ver más
-                                                            </button>
-                                                        )}
-                                                    </>
-                                                )}
-                                            </div>
-                                        ))}
+                                        {Object.entries(horarios[medico.id]).map(([fecha, lista]) => {
+                                            const mostrarTodos = verMasDias[medico.id]?.[fecha] || false;
+                                            const mostrar = mostrarTodos ? lista : lista.slice(0, 3);
+                                            return (
+                                                <div className="fecha-col" key={fecha}>
+                                                    <h4>{fecha.split("-").reverse().join("/")}</h4>
+                                                    {lista.length === 0 ? (
+                                                        <p>No se encontraron resultados para tu búsqueda.</p>
+                                                    ) : (
+                                                        <>
+                                                            {mostrar.map((slot, idx) =>
+                                                                <div className={`slot ${slot.disponible ? "disponible" : "reservado"}`} key={idx}>
+                                                                    {slot.disponible ? (
+                                                                        <a
+                                                                            href={`/confirmarCita?medicoId=${medico.id}&fechaHora=${slot.fecha}T${slot.hora}`}
+                                                                        >
+                                                                            {slot.horaFormateada || slot.hora}
+                                                                        </a>
+                                                                    ) : (
+                                                                        <span>{slot.horaFormateada || slot.hora}</span>
+                                                                    )}
+                                                                </div>
+                                                            )}
+                                                            {lista.length > 3 && (
+                                                                <button
+                                                                    type="button"
+                                                                    className="toggle-button"
+                                                                    onClick={() => handleVerMas(medico.id, fecha)}
+                                                                >
+                                                                    {mostrarTodos ? "Ver menos" : "Ver más"}
+                                                                </button>
+                                                            )}
+                                                        </>
+                                                    )}
+                                                </div>
+                                            );
+                                        })}
                                     </div>
                                 )}
                             </div>
@@ -183,7 +179,6 @@ function BuscarCita() {
                     ))}
                 </div>
             </div>
-            {/* <Footer /> */}
         </div>
     );
 }

@@ -83,10 +83,10 @@ export default function HorarioExtendido() {
                                             <a
                                                 href={`/confirmarCita?medicoId=${medicoId}&fechaHora=${slot.fechaHoraFormateada}`}
                                             >
-                                                {slot.hora}
+                                                {slot.horaFormateada || slot.hora}
                                             </a>
                                         ) : (
-                                            <span>{slot.hora}</span>
+                                            <span>{slot.horaFormateada || slot.hora}</span>
                                         )}
                                     </div>
                                 ))}

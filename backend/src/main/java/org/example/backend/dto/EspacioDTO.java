@@ -42,6 +42,7 @@ public class EspacioDTO {
     }
 
     public String getHoraFormateada() {
-        return hora != null ? hora.format(java.time.format.DateTimeFormatter.ofPattern("HH:mm")) : "";
+        if (hora == null) return "";
+        return hora.format(DateTimeFormatter.ofPattern("HH:mm"));
     }
 }
