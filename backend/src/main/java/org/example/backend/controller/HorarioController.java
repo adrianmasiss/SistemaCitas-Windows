@@ -1,6 +1,7 @@
+// backend/src/main/java/org/example/backend/controller/HorarioController.java
 package org.example.backend.controller;
 
-import org.example.backend.dto.EspacioDTO;
+import org.example.backend.dto.HorarioDTO;
 import org.example.backend.entidad.Horario;
 import org.example.backend.entidad.Usuario;
 import org.example.backend.servicio.HorarioService;
@@ -9,8 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.util.List;
+import java.time.LocalTime;
 
 @RestController
 @RequestMapping("/api/horarios")
@@ -21,24 +21,21 @@ public class HorarioController {
     @Autowired
     private UsuarioService usuarioService;
 
-    @GetMapping("/medico/{medicoId}")
-    public List<Horario> listar(@PathVariable Long medicoId) {
-        Usuario medico = usuarioService.buscarPorId(medicoId).orElse(null);
-        return horarioService.listarHorariosPorMedico(medico);
-    }
-    // Devuelve los espacios disponibles para los próximos "dias" del médico
-    @GetMapping("/medico/{medicoId}/espacios")
-    public List<EspacioDTO> espaciosDisponibles(
-            @PathVariable Long medicoId,
-            @RequestParam(defaultValue = "3") int dias) {
-        if (dias < 1) dias = 1;
-        if (dias > 30) dias = 30;
-        Usuario medico = usuarioService.buscarPorId(medicoId).orElse(null);
-        return horarioService.calcularNdias(medico, LocalDate.now().plusDays(1), dias);
-    }
     @PostMapping("/crear")
-    public ResponseEntity<?> crear(@RequestBody Horario horario) {
-        horarioService.crearHorario(horario);
-        return ResponseEntity.ok("Horario creado");
+    public ResponseEntity<?> crear(@RequestBody HorarioDTO dto) {
+        Usuario medico = usuarioService.buscarPorId(dto.getMedicoId()).orElse(null);
+        if (medico == null) return ResponseEntity.badRequest().body("Médico no encontrado");
+        try {
+            Horario horario = new Horario();
+            horario.setMedico(medico);
+            horario.setDiaSemana(dto.getDiaSemana());
+            horario.setHoraInicio(LocalTime.parse(dto.getHoraInicio()));
+            horario.setHoraFin(LocalTime.parse(dto.getHoraFin()));
+            horario.setFrecuencia(dto.getFrecuencia());
+            horarioService.crearHorario(horario);
+            return ResponseEntity.ok("Horario creado");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error al crear horario: " + e.getMessage());
+        }
     }
 }

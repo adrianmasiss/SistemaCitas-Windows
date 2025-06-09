@@ -42,14 +42,16 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
         String path = request.getServletPath();
+        System.out.println(">>> JwtFilter PATH: " + path);
 
-        // Si la ruta es pública, no hacemos nada y seguimos la cadena de filtros
         if (esRutaPublica(path)) {
+            System.out.println(">>> JwtFilter: Ruta PÚBLICA: " + path);
             chain.doFilter(request, response);
             return;
+        } else {
+            System.out.println(">>> JwtFilter: Ruta protegida (requiere JWT): " + path);
         }
 
-        // Si la ruta NO es pública, validamos el JWT
         String header = request.getHeader("Authorization");
         String token = null;
         if (header != null && header.startsWith("Bearer ")) {
@@ -58,7 +60,6 @@ public class JwtFilter extends OncePerRequestFilter {
         if (token != null && jwtUtils.validateJwt(token)) {
             String username = jwtUtils.getUsernameFromJwt(token);
 
-            // Carga el usuario y establece la autenticación
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
             UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
                     userDetails, null, userDetails.getAuthorities()

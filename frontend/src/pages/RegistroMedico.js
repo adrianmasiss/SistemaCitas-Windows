@@ -23,6 +23,7 @@ export default function RegistroMedico() {
         e.preventDefault();
         setError('');
 
+        // Validación local
         if (!datos.nombre || !datos.username || !datos.clave || !datos.confirmClave ||
             !datos.especialidad || !datos.costoConsulta || !datos.localidad ||
             !datos.diaInicioTrabajo || !datos.diaFinTrabajo ||
@@ -34,11 +35,16 @@ export default function RegistroMedico() {
             setError('Las contraseñas no coinciden.');
             return;
         }
+
+        // Aquí envías SOLO los datos requeridos por el backend (sin confirmClave)
+        const datosBackend = { ...datos };
+        delete datosBackend.confirmClave;
+
         try {
             const res = await fetch('/api/auth/registerMedico', {
                 method: 'POST',
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(datos)
+                body: JSON.stringify(datosBackend)
             });
             if (!res.ok) {
                 setError(await res.text());

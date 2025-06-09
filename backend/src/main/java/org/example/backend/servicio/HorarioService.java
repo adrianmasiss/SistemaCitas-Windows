@@ -20,7 +20,19 @@ public class HorarioService {
     @Autowired
     private CitaRepository citaRepository;
 
-    // Calcular espacios disponibles para los próximos N días de un médico
+    private String dayOfWeekToSpanish(java.time.DayOfWeek dayOfWeek) {
+        switch (dayOfWeek) {
+            case MONDAY: return "LUNES";
+            case TUESDAY: return "MARTES";
+            case WEDNESDAY: return "MIERCOLES";
+            case THURSDAY: return "JUEVES";
+            case FRIDAY: return "VIERNES";
+            case SATURDAY: return "SABADO";
+            case SUNDAY: return "DOMINGO";
+            default: throw new IllegalArgumentException("Día inválido: " + dayOfWeek);
+        }
+    }
+
     public List<EspacioDTO> calcularNdias(Usuario medico, LocalDate inicio, int cantidadDias) {
         if (medico == null) return Collections.emptyList();
         List<Horario> horarios = horarioRepository.findByMedico(medico);
@@ -28,12 +40,12 @@ public class HorarioService {
         List<EspacioDTO> espacios = new ArrayList<>();
         for (int i = 0; i < cantidadDias; i++) {
             LocalDate fecha = inicio.plusDays(i);
-            String diaSemana = fecha.getDayOfWeek().name(); // Ejemplo: MONDAY
+            String diaSemana = dayOfWeekToSpanish(fecha.getDayOfWeek()); // CAMBIO AQUÍ
             for (Horario h : horarios) {
                 if (!h.getDiaSemana().equalsIgnoreCase(diaSemana)) continue;
-                LocalTime horaActual = h.getHoraInicio();
+                java.time.LocalTime horaActual = h.getHoraInicio();
                 while (!horaActual.isAfter(h.getHoraFin().minusMinutes(h.getFrecuencia()))) {
-                    LocalDateTime fechaHora = LocalDateTime.of(fecha, horaActual);
+                    java.time.LocalDateTime fechaHora = java.time.LocalDateTime.of(fecha, horaActual);
                     boolean reservado = citaRepository.findByMedicoAndFechaHora(medico, fechaHora).isPresent();
                     espacios.add(new EspacioDTO(fecha, horaActual, !reservado));
                     horaActual = horaActual.plusMinutes(h.getFrecuencia());

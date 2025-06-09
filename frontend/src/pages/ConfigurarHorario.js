@@ -21,9 +21,7 @@ export default function ConfigurarHorario() {
     const [horarios, setHorarios] = useState([]);
     const [error, setError] = useState('');
 
-    // Cargar horarios actuales al montar
     useEffect(() => {
-        // Suponiendo que el ID del médico viene por auth/context...
         const medicoId = localStorage.getItem('usuarioId');
         fetch(`/api/horarios/medico/${medicoId}`)
             .then(res => res.json())
@@ -31,7 +29,6 @@ export default function ConfigurarHorario() {
             .catch(() => setHorarios([]));
     }, []);
 
-    // Manejar envío del formulario
     const handleSubmit = (e) => {
         e.preventDefault();
         setError('');
@@ -50,16 +47,19 @@ export default function ConfigurarHorario() {
         })
             .then(res => {
                 if (!res.ok) return res.text().then(setError);
+                // Limpiar el formulario
+                setHoraInicio('');
+                setHoraFin('');
+                setFrecuencia('');
                 // Recargar horarios después de crear
                 return fetch(`/api/horarios/medico/${medicoId}`).then(r => r.json()).then(setHorarios);
             })
             .catch(() => setError('Error al crear horario'));
     };
 
-    // Ir a gestión de citas (o tu ruta deseada)
     const handleFinalizar = (e) => {
         e.preventDefault();
-        window.location.href = "/medico/gestionCitas"; // Cambia a tu ruta real si usas react-router
+        window.location.href = "/medico/gestionCitas";
     };
 
     return (

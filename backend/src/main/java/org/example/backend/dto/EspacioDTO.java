@@ -41,9 +41,7 @@ public class EspacioDTO {
         this.disponible = disponible;
     }
 
-    // Utilidad: Para armar el enlace en React
-    public String getFechaHoraFormateada() {
-        LocalDateTime fechaHora = LocalDateTime.of(fecha, hora);
-        return fechaHora.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
+    public String getHoraFormateada() {
+        return hora != null ? hora.format(java.time.format.DateTimeFormatter.ofPattern("HH:mm")) : "";
     }
 }

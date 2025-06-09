@@ -11,6 +11,8 @@ import RegistroPaciente from "./pages/RegistroPaciente";
 import AdminMedicos from "./pages/AdminMedicos";
 import GestionCitasMedico from "./pages/gestionCitasMedico";
 import HorarioExtendido from "./pages/HorarioExtendido";
+import ConfigurarHorario from './pages/ConfigurarHorario';
+
 
 
 function App() {
@@ -32,7 +34,7 @@ function App() {
                     <Route path="/admin/medicos" element={<AdminMedicos />} />
                     <Route path="/medico/gestionCitas" element={<GestionCitasMedico />} />
                     <Route path="/horarioExtendido" element={<HorarioExtendido />} />
-
+                    <Route path="/medico/configurarHorario" element={<ConfigurarHorario />} />
                     {/* Aquí irán más páginas */}
                 </Routes>
             </main>

@@ -148,15 +148,15 @@ function BuscarCita() {
                                                 ) : (
                                                     <>
                                                         {lista.slice(0, 3).map((slot, idx) =>
-                                                            <div className={`slot ${slot.disponible ? "disponible" : "reservado"}`} key={idx}>
+                                                            <div className={`slot ${slot.disponible ? "disponible" : "reservado"}`}>
                                                                 {slot.disponible ? (
                                                                     <a
                                                                         href={`/confirmarCita?medicoId=${medico.id}&fechaHora=${slot.fecha}T${slot.hora}`}
                                                                     >
-                                                                        {slot.hora.slice(0, 5)}
+                                                                        {slot.horaFormateada || slot.hora}
                                                                     </a>
                                                                 ) : (
-                                                                    <span>{slot.hora.slice(0, 5)}</span>
+                                                                    <span>{slot.horaFormateada || slot.hora}</span>
                                                                 )}
                                                             </div>
                                                         )}

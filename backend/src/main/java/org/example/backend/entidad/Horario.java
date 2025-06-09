@@ -68,4 +68,12 @@ public class Horario implements Serializable {
     private Integer frecuencia;
 
     public Horario() {}
+
+    public Horario(String diaSemana, LocalTime horaInicio, LocalTime horaFin, Integer frecuencia, Usuario medico) {
+        this.diaSemana = diaSemana;
+        this.horaInicio = horaInicio;
+        this.horaFin = horaFin;
+        this.frecuencia = frecuencia;
+        this.medico = medico;
+    }
 }

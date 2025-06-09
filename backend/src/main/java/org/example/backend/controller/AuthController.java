@@ -4,12 +4,19 @@ import org.example.backend.dto.LoginRequest;
 import org.example.backend.dto.LoginResponse;
 import org.example.backend.dto.RegistroPacienteDTO;
 import org.example.backend.dto.RegistroMedicoDTO;
+import org.example.backend.entidad.DiaSemana;
+import org.example.backend.entidad.Horario;
 import org.example.backend.entidad.Usuario;
+import org.example.backend.servicio.HorarioService;
 import org.example.backend.servicio.UsuarioService;
 import org.example.backend.seguridad.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -19,6 +26,9 @@ public class AuthController {
     private UsuarioService usuarioService;
     @Autowired
     private JwtUtils jwtUtils;
+
+    @Autowired
+    private HorarioService horarioService;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest req) {
@@ -48,15 +58,9 @@ public class AuthController {
         usuarioService.registrarUsuario(nuevo);
         return ResponseEntity.ok("Paciente registrado correctamente");
     }
-
     @PostMapping("/registerMedico")
-    public ResponseEntity<?> registerMedico(@RequestBody RegistroMedicoDTO dto) {
-        if (!dto.getClave().equals(dto.getConfirmClave())) {
-            return ResponseEntity.badRequest().body("Las contraseñas no coinciden.");
-        }
-        if (usuarioService.existeUsername(dto.getUsername())) {
-            return ResponseEntity.badRequest().body("El nombre de usuario ya está en uso.");
-        }
+    public ResponseEntity<?> registrarMedico(@RequestBody RegistroMedicoDTO dto) {
+        // Crear el usuario médico
         Usuario usuario = new Usuario();
         usuario.setNombre(dto.getNombre());
         usuario.setUsername(dto.getUsername());
@@ -72,8 +76,45 @@ public class AuthController {
         usuario.setDiaInicioTrabajo(dto.getDiaInicioTrabajo());
         usuario.setDiaFinTrabajo(dto.getDiaFinTrabajo());
 
-        usuarioService.registrarUsuario(usuario);
-        // Puedes crear horarios iniciales aquí si lo deseas
-        return ResponseEntity.ok("Médico registrado correctamente. Queda pendiente de aprobación.");
+        Usuario medicoGuardado = usuarioService.registrarUsuario(usuario);
+
+        // Crear horarios iniciales según los datos del DTO
+        try {
+            DiaSemana inicio = DiaSemana.valueOf(dto.getDiaInicioTrabajo());
+            DiaSemana fin = DiaSemana.valueOf(dto.getDiaFinTrabajo());
+            LocalTime horaInicio = LocalTime.parse(dto.getHoraInicioTrabajo());
+            LocalTime horaFin = LocalTime.parse(dto.getHoraFinTrabajo());
+            Integer frecuencia = dto.getFrecuencia();
+
+            List<DiaSemana> dias = obtenerDiasLaborales(inicio, fin);
+            for (DiaSemana dia : dias) {
+                Horario h = new Horario(
+                        dia.name(),      // pasa el nombre del enum como String ("LUNES", etc.)
+                        horaInicio,
+                        horaFin,
+                        frecuencia,
+                        medicoGuardado
+                );
+                horarioService.crearHorario(h);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error al crear los horarios del médico: " + e.getMessage());
+        }
+
+        return ResponseEntity.ok("Registro exitoso");
+    }
+
+    // Método auxiliar para calcular el rango de días
+    private List<DiaSemana> obtenerDiasLaborales(DiaSemana inicio, DiaSemana fin) {
+        DiaSemana[] dias = DiaSemana.values();
+        List<DiaSemana> resultado = new ArrayList<>();
+        int start = inicio.ordinal();
+        int end = fin.ordinal();
+        int i = start;
+        do {
+            resultado.add(dias[i]);
+            i = (i + 1) % dias.length;
+        } while (i != (end + 1) % dias.length);
+        return resultado;
     }
 }

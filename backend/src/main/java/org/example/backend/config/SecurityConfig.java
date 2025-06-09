@@ -38,6 +38,7 @@ public class SecurityConfig {
                                 "/api/medicos/buscar",     // búsqueda pública de médicos
                                 "/api/horarios/medico/**",
                                 "/api/horario-extendido/**",
+                                "/api/auth/registerMedico",
                                 "/api/home",
                                 "/static/**",
                                 "/css/**", "/js/**", "/images/**"
@@ -61,5 +62,18 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
+    }
+
+    @Bean
+    public org.springframework.web.servlet.config.annotation.WebMvcConfigurer corsConfigurer() {
+        return new org.springframework.web.servlet.config.annotation.WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(org.springframework.web.servlet.config.annotation.CorsRegistry registry) {
+                registry.addMapping("/api/**")
+                        .allowedOrigins("http://localhost:3000")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*");
+            }
+        };
     }
 }
