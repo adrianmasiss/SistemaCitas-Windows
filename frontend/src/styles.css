@@ -1,0 +1,1527 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+/* ============================================================================
+   BASE GENERAL
+============================================================================ */
+body {
+    font-family: 'Poppins', 'Segoe UI', sans-serif;
+    background: #f5f7fa;
+    margin: 0;
+    padding: 0;
+}
+.container, .contenedor, .form-container, .mensaje-container {
+    width: 80%;
+    margin: 2rem auto;
+}
+
+/* ============================================================================
+   HEADER Y MENÚ SUPERIOR
+============================================================================ */
+.header {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 2rem;
+    background-color: #e3f2fd;
+    border-bottom: 1px solid #d6eaf8;
+    flex-wrap: wrap;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #2c3e50;
+}
+.logo img {
+    width: 100px;
+    height: 60px;
+    margin-right: 0.5rem;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.menu {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-weight: 500;
+}
+.menu a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+.menu a:hover {
+    text-decoration: underline;
+}
+
+/* ============================================================================
+   FOOTER
+============================================================================ */
+.footer {
+    background: #343a40;
+    color: white;
+    text-align: center;
+    padding: 17px;
+    margin-top: 11rem;
+    position: relative;
+}
+.footer i {
+    margin: 0 0.5rem;
+}
+.footer-redes {
+    height: 60px;
+    margin-left: 1rem;
+    vertical-align: middle;
+}
+
+/* ============================================================================
+   BOTONES GENERALES
+============================================================================ */
+.btn-blue, .btn-volver, .btn-ver, .btn-volver-ext, .btn-volver-login {
+    background: #007bff;
+    color: #fff;
+    font-weight: bold;
+    padding: 6px 14px;
+    border-radius: 16px;
+    text-decoration: none;
+    cursor: pointer;
+    display: inline-block;
+    transition: background 0.3s ease;
+}
+.btn-blue:hover, .btn-volver:hover, .btn-ver:hover,
+.btn-volver-ext:hover, .btn-volver-login:hover {
+    background: #0056b3;
+}
+.btn-completar, .btn-aprobar, .btn-confirm {
+    background: #28a745;
+    color: #fff;
+    border: none;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+.btn-completar:hover, .btn-aprobar:hover, .btn-confirm:hover {
+    background: #218838;
+}
+.btn-cancel, .modal-cancel {
+    background: #ccc;
+    color: #333;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.btn-cancel:hover, .modal-cancel:hover {
+    background: #b3b3b3;
+}
+
+/* ============================================================================
+   LOGIN
+============================================================================ */
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+}
+.login-box {
+    background: white;
+    width: 360px;
+    margin: 5rem auto;
+    border-radius: 10px;
+    padding: 2rem;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    text-align: center;
+}
+.login-box h2 {
+    margin-bottom: 1rem;
+}
+.login-avatar {
+    width: 60px;
+    height: 60px;
+    margin: 0rem 0 5px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 0 14px 0;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+}
+.input-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fdfdfd;
+}
+.input-icon {
+    padding: 10px;
+    color: #777;
+    background: #eee;
+    border-right: 1px solid #ccc;
+}
+.input-group input {
+    flex: 1;
+    border: none;
+    padding: 10px;
+    background: transparent;
+    outline: none;
+    font-size: 1rem;
+}
+.btn-primary {
+    background: #0097a7;
+    color: white;
+    padding: 10px 0;
+    width: 100%;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 1rem;
+}
+.btn-primary:hover {
+    background: #007c91;
+}
+.register-link {
+    margin-top: 1rem;
+}
+.register-text {
+    color: #e74c3c;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* ============================================================================
+   REGISTRO
+============================================================================ */
+.register-box {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    padding: 2rem 2.5rem;
+    margin-top: 3rem;
+    max-width: 450px;
+    text-align: center;
+}
+.register-box h1 {
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+}
+.txt-medico {
+    color: #007bff;
+    font-weight: 600;
+}
+.txt-paciente {
+    color: #e67e22;
+    font-weight: 600;
+}
+.register-box label {
+    display: block;
+    text-align: left;
+    margin: 1rem 0 0.3rem 0;
+}
+.register-box input[type="text"],
+.register-box input[type="password"] {
+    width: 100%;
+    padding: 0.6rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    outline: none;
+    font-size: 1rem;
+}
+.register-box input:hover,
+.register-box input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 3px rgba(0,123,255,0.2);
+}
+.enlace-login {
+    text-decoration: underline;
+    font-weight: bold;
+    color: #007bff;
+}
+.enlace-login:hover {
+    color: #0056b3;
+}
+
+/* ============================================================================
+   BÚSQUEDA Y LISTADO DE MÉDICOS
+============================================================================ */
+.search-box {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 20px;
+    width: 80%;
+    margin: 2rem auto;
+    display: flex;
+    justify-content: center;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+}
+.search-box form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    width: 100%;
+}
+.search-box input[type="text"] {
+    border: 1px solid #ccc;
+    padding: 12px 14px;
+    border-radius: 25px;
+    font-size: 1rem;
+    width: 200px;
+    transition: border 0.3s ease;
+}
+.search-box input[type="text"]:focus {
+    outline: none;
+    border-color: #007bff;
+}
+.search-box button {
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 5px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+.search-box button:hover {
+    background-color: #0056b3;
+}
+.medico-card {
+    background: white;
+    margin: 2rem auto;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    width: 85%;
+    transition: transform 0.2s ease;
+}
+.medico-card:hover {
+    transform: translateY(-2px);
+}
+.medico-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+}
+.medico-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.medico-info img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+}
+.medico-info b {
+    font-size: 1.1rem;
+    margin-bottom: 2px;
+}
+.schedule-link {
+    text-align: right;
+    margin-top: 1rem;
+}
+.schedule-link a {
+    background: #eaf0fb;
+    color: #007bff;
+    font-weight: bold;
+    padding: 6px 14px;
+    border-radius: 16px;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+.schedule-link a:hover {
+    background: #d6e4f7;
+}
+
+/* ============================================================================
+   SLOTS Y HORARIOS
+============================================================================ */
+.fechas.horarios-toggle {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+    margin-top: 1rem;
+}
+.fecha-col {
+    min-width: 120px;
+    text-align: center;
+    padding: 0.5rem 1rem;
+    margin-bottom: 1rem;
+}
+.fecha-col h4 {
+    margin-bottom: 0.5rem;
+    color: #e67e22;
+    font-size: 1rem;
+    font-weight: bold;
+}
+.slot {
+    margin: 2px 0;
+}
+.slot a, .slot span {
+    background: #eaf0fb;
+    color: #007bff;
+    border-radius: 16px;
+    padding: 4px 10px;
+    font-size: 0.85rem;
+    margin: 3px;
+    display: inline-block;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+.slot a:hover {
+    background-color: #d6e4f7;
+}
+.slot.reservado span {
+    background: #eee;
+    color: gray;
+}
+
+/* ============================================================================
+   TABLAS Y FORMULARIOS BÁSICOS
+============================================================================ */
+table {
+    width: 90%;
+    margin: 1rem auto;
+    border-collapse: collapse;
+}
+table th, table td {
+    border: 1px solid #ccc;
+    padding: 0.8rem;
+    text-align: left;
+}
+table th {
+    background-color: #f2f2f2;
+}
+label {
+    font-weight: bold;
+    display: block;
+    margin-top: 1rem;
+}
+input[type="time"], input[type="number"], select, textarea {
+    width: 100%;
+    padding: 0.4rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+}
+button {
+    padding: 10px;
+    background: #17a2b8;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+button:hover {
+    background: #138496;
+}
+.cancelar {
+    background-color: #ccc !important;
+}
+
+/* ============================================================================
+   MENSAJES
+============================================================================ */
+.error-msg, .error-message, .error {
+    color: red;
+    font-size: 0.9rem;
+    margin: 0.5rem 0;
+    font-weight: bold;
+}
+.logout-msg, .success-message {
+    color: green;
+    font-size: 0.9rem;
+    margin: 0.5rem 0;
+}
+
+/* ============================================================================
+   MODALES
+============================================================================ */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+.modal-registro {
+    background: white;
+    width: 320px;
+    margin: 10% auto;
+    padding: 2rem;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    animation: fadeIn 0.3s ease-in-out;
+}
+.modal-registro h3 {
+    margin-bottom: 1.2rem;
+    font-size: 1.4rem;
+    color: #2c3e50;
+}
+.modal-btn {
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+    width: 90%;
+    background: #3498db;
+    color: white;
+    border-radius: 5px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background 0.2s ease;
+}
+.modal-btn:hover {
+    background: #2c81ba;
+}
+
+/* Animación */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+
+
+/* =========================
+   HISTÓRICO DE CITAS
+========================= */
+.hist-title-container {
+    text-align: center;
+    margin: 1.5rem auto;
+}
+.hist-title-container h1 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+.patient-name {
+    color: #3498db;
+}
+
+/* Barra de filtros */
+.hist-filters {
+    justify-content: flex-start; /* o center, si prefieres */
+    margin-top: 1rem;
+}
+.hist-form-filters {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    flex-wrap: wrap; /* para que no se corte en pantallas pequeñas */
+}
+.filter-label {
+    font-weight: bold;
+}
+.filter-select, .filter-input {
+    padding: 0.4rem 0.6rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    min-width: 100px;
+}
+.btn-search {
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 0.4rem 1rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+.btn-search:hover {
+    background: #0056b3;
+}
+
+/* Contenedor de las tarjetas de citas */
+.hist-cards-container {
+    width: 85%;
+    margin: 1.5rem auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Cada tarjeta de cita */
+.hist-card {
+    background: #fff;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+/* Izquierda: foto y datos */
+.hist-card-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.hist-doc-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ddd;
+}
+.hist-location {
+    color: #777;
+    font-size: 0.9rem;
+}
+
+/* Derecha: fecha, estado, botón ver */
+.hist-card-right {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    flex-shrink: 0; /* Evita que se reduzca de tamaño */
+}
+
+/* Fecha/hora */
+.hist-date {
+    font-weight: bold;
+    color: #444;
+}
+/* Badge para el estado */
+.hist-badge {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    border-radius: 12px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+/* Ejemplo: si estado = 'PENDIENTE', usas .hist-badge.PENDIENTE { background: #f1c40f; } */
+.hist-badge.PENDIENTE {
+    background: #f1c40f;
+    color: #000;
+}
+.hist-badge.CONFIRMADA {
+    background: #3498db;
+}
+.hist-badge.CANCELADA {
+    background: #e74c3c;
+}
+.hist-badge.ATENDIDA {
+    background: #2ecc71;
+}
+/* etc. */
+
+/* Botón "View" */
+.hist-view-btn {
+    background: none;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+.hist-view-btn:hover {
+    text-decoration: underline;
+}
+
+/* Botón "Go Back" */
+.btn-volver {
+    background: #ccc;
+    color: #333;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    text-decoration: none;
+    margin-left: 1rem;
+}
+.btn-volver:hover {
+    background: #b3b3b3;
+}
+/* ===== GESTIÓN DE CITAS MÉDICAS ===== */
+
+.header-citas {
+    background-color: #e3f2fd;
+    color: black;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-citas h1 {
+    margin: 0;
+    font-size: 1.8rem;
+}
+
+.header-citas nav a {
+    color: black;
+    margin-left: 1.5rem;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.contenedor-citas {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.filtros-citas {
+    background-color: white;
+    padding: 1rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+.tabla-citas {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    animation: fadeIn 0.6s ease-in;
+    margin-top: 1.5rem;
+}
+
+.tabla-citas th, .tabla-citas td {
+    padding: 1rem;
+    text-align: center;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 0.95rem;
+}
+
+.tabla-citas th {
+    background-color: #e3eaf5;
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+.tabla-citas tr:last-child td {
+    border-bottom: none;
+}
+
+.tabla-citas i {
+    margin-right: 6px;
+    color: #007bff;
+}
+
+.tabla-citas td {
+    color: #2c3e50;
+}
+
+.tabla-citas td span {
+    font-weight: 500;
+}
+
+.tabla-citas .btn-completar {
+    background-color: #28a745;
+    color: white;
+    font-weight: bold;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.tabla-citas .btn-completar:hover {
+    background-color: #218838;
+}
+
+.tabla-citas .btn-completar i {
+    margin-right: 5px;
+}
+
+
+.input-anotaciones {
+    width: 75%;
+    padding: 0.4rem;
+    margin-right: 0.5rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.btn-completar {
+    background-color: #4caf50;
+    color: white;
+    padding: 0.4rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-completar:hover {
+    background-color: #43a047;
+}
+
+.mensaje-sin-citas {
+    text-align: center;
+    padding: 2rem;
+    color: #777;
+    font-style: italic;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+
+/* Gestión de Citas */
+.gestion-citas-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.gestion-citas-container h1 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+.filtros {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+    justify-content: center;
+}
+
+.filtros label {
+    font-weight: bold;
+    margin-right: 0.5rem;
+}
+
+.filtros select,
+.filtros input[type="text"] {
+    padding: 0.5rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.filtros button {
+    background-color: #1f78d1;
+    color: white;
+    border: none;
+    padding: 0.6rem 1rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.filtros button:hover {
+    background-color: #155ea8;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+thead {
+    background-color: #1f78d1;
+    color: white;
+}
+
+th, td {
+    padding: 0.8rem;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+tr:hover {
+    background-color: #f2f8ff;
+}
+
+.btn-completar {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-completar:hover {
+    background-color: #3c9743;
+}
+
+.form-anotaciones {
+    width: 100%;
+    padding: 0.4rem;
+    margin-bottom: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+
+.success {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 10px 15px;
+    border: 1px solid #c3e6cb;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+
+.confirm-cita-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem;
+    background-color: #f8f9fa;
+    min-height: 70vh;
+}
+
+.confirm-cita-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.15);
+    padding: 2.5rem;
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+}
+
+.confirm-cita-header img.doctor-photo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1rem;
+    border: 3px solid #3498db;
+}
+
+.confirm-cita-header h2 {
+    margin: 0;
+    font-size: 1.8rem;
+    color: #2c3e50;
+}
+
+.confirm-cita-info {
+    margin: 1.5rem 0;
+    font-size: 1.1rem;
+    color: #555;
+}
+
+.confirm-cita-info i {
+    color: #3498db;
+    margin-right: 0.5rem;
+}
+
+.confirm-cita-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.confirm-cita-actions .btn-confirm {
+    background-color: #2ecc71;
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.confirm-cita-actions .btn-cancel {
+    background-color: #e74c3c;
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.footer {
+    text-align: center;
+    padding: 1.5rem;
+    background-color: #f0f0f0;
+    color: #7f8c8d;
+    font-size: 0.9rem;
+}
+
+.footer-icons {
+    margin-top: 0.5rem;
+}
+
+.footer-icons i {
+    margin: 0 0.4rem;
+    color: #3498db;
+}
+
+
+.horario-ext-card {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    max-width: 1000px;
+    margin: 2rem auto;
+}
+
+.fila-superior {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.info-medico {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.foto-perfil-medico {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #3498db;
+}
+
+.detalle-medico {
+    font-size: 0.95rem;
+    color: #2c3e50;
+}
+
+.nombre-medico {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.especialidad-medico,
+.precio-medico,
+.localidad-medico {
+    margin-top: 4px;
+}
+
+.fecha-col {
+    margin-top: 1.5rem;
+}
+
+.titulo-fecha {
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+    color: #2980b9;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 0.3rem;
+}
+
+.slot a {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: #2ecc71;
+    color: white;
+    border-radius: 8px;
+    margin: 0.2rem;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.slot a:hover {
+    background: #27ae60;
+    transform: scale(1.05);
+}
+
+.btn-volver-ext {
+    display: inline-block;
+    margin: 2rem auto;
+    padding: 0.7rem 2rem;
+    background: #3498db;
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-volver-ext:hover {
+    background: #2980b9;
+}
+
+.btn-navegacion {
+    background-color: #ecf0f1;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.btn-navegacion:hover {
+    background-color: #dcdde1;
+}
+
+
+.admin-table thead th {
+    color: #2c3e50; /* o cualquier color que quieras */
+    font-weight: bold;
+    background-color: #f0f8ff; /* opcional: fondo para destacarlos */
+}
+
+
+.horarios-titles-table thead th {
+    color: #2c3e50; /* o cualquier color que quieras */
+    font-weight: bold;
+    background-color: #f0f8ff; /* opcional: fondo para destacarlos */
+}
+
+.logout-btn {
+    background: none;
+    border: none;
+    color: #333;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    display: inline;
+    padding: 0;
+    margin: 0;
+    vertical-align: middle;
+    text-decoration: none;
+}
+
+.logout-btn:hover {
+    opacity: 0.7;
+    color: #007bff; /* o el color que usas en hover */
+}
+
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 2rem;
+    background-color: #e3f2fd;
+    border-bottom: 1px solid #d6eaf8;
+    flex-wrap: wrap;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #2c3e50;
+    gap: 0.5rem;
+}
+
+.logo img {
+    width: 100px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.telefono-contacto {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: bold;
+    color: #f39c12;
+    white-space: nowrap;
+}
+
+
+.menu {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    font-weight: 500;
+    margin-left: auto;
+}
+
+
+.menu a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+.menu a:hover {
+    text-decoration: underline;
+}
+
+.logout-btn {
+    background: none;
+    border: none;
+    color: #333;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    vertical-align: middle;
+    transition: opacity 0.2s ease;
+}
+
+
+.logout-btn:hover {
+    opacity: 0.7;
+    color: #333;
+}
+
+
+
+.btn-historial {
+    background-color: #3498db;
+    color: white;
+    padding: 0.4rem 0.8rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    font-weight: bold;
+    margin-right: 0.5rem;
+    transition: background-color 0.3s ease;
+}
+
+.btn-historial:hover {
+    background-color: #3498db;
+}
+
+
+
+.search-box input[type="text"],
+.search-box button {
+    height: 44px;
+    box-sizing: border-box;
+}
+
+.search-box button {
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0px;
+}
+
+.formulario-filtros {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 2rem;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.campo-filtro {
+    display: flex;
+    flex-direction: column;
+    min-width: 220px;
+}
+
+.campo-filtro label {
+    font-weight: bold;
+    margin-bottom: 0.4rem;
+    color: #2c3e50;
+}
+
+.campo-filtro input,
+.campo-filtro select {
+    padding: 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.igualado {
+    flex: 1;
+}
+
+
+.badge-estado {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.85rem;
+    color: white;
+    text-transform: uppercase;
+}
+
+.badge-PENDIENTE {
+    background-color: #f1c40f; /* Amarillo */
+    color: #000;
+}
+
+.badge-CONFIRMADA {
+    background-color: #3498db; /* Azul */
+}
+
+.badge-CANCELADA {
+    background-color: #e74c3c; /* Rojo */
+}
+
+.badge-ATENDIDA {
+    background-color: #2ecc71; /* Verde */
+}
+
+
+
+.footer-elegante {
+    background-color: #2c3e50;
+    color: white;
+    padding: 20px 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+    flex-wrap: wrap;
+}
+
+.footer-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.footer-icons a {
+    color: white;
+    margin: 0 0.3rem;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+    transform: translateY(-20px); /* ← Subir un poquito */
+}
+
+.footer-icons a:hover {
+    color: #f1c40f;
+}
+
+.footer-right {
+    font-size: 0.85rem;
+    color: #ddd;
+}
+
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.layout-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.contenido-principal {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.footer-redes-sociales {
+    margin-top: 200px;
+    height: 22px;
+
+}
+
+.footer-icons i {
+    color: white;
+    font-size: 1rem;
+    margin: 0 0.3rem;
+    transition: transform 0.3s ease, color 0.3s ease;
+    transform: translateY(-4px); /* <-- Esto sube el ícono */
+}
+.footer-icons i:hover {
+    color: #f1c40f;
+    transform: translateY(-5px); /* <-- Sube un poco más al pasar el mouse */
+}
+
+/* ========== LOGIN PÁGINA (centrado y elegante) ========== */
+.login-bg {
+    min-height: 100vh;
+    background: #f5f7fa;
+    display: flex;
+    flex-direction: column;
+    margin-top: -158px;
+}
+.login-center {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+}
+.login-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 2.5rem 2.5rem 2rem 2.5rem;
+    box-shadow: 0 4px 32px rgba(0,0,0,0.10);
+    width: 350px;
+    text-align: center;
+    margin: 0;
+}
+.login-avatar {
+    width: 60px;
+    height: 60px;
+    margin: 0 0 14px 0;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+}
+.login-title {
+    font-size: 1.5rem;
+    margin-bottom: 1.3rem;
+    color: #222;
+    font-weight: 600;
+}
+.input-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.3rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #fdfdfd;
+}
+.input-icon {
+    padding: 10px 12px;
+    color: #777;
+    background: #eee;
+    border-right: 1px solid #ccc;
+    font-size: 1.2rem;
+}
+.input-group input {
+    flex: 1;
+    border: none;
+    padding: 11px 12px;
+    background: transparent;
+    outline: none;
+    font-size: 1rem;
+}
+.btn-primary {
+    background: #0097a7;
+    color: white;
+    padding: 11px 0;
+    width: 100%;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 0.3rem;
+    font-size: 1rem;
+}
+.btn-primary:hover {
+    background: #007c91;
+}
+/* Enlace de registro */
+.register-link {
+    margin-top: 1.5rem;
+    font-size: 1rem;
+}
+.register-text {
+    color: #e74c3c;
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+/* -------- SOLO DEJA UNO DE ESTOS FOOTER SEGÚN TU NECESIDAD -------- */
+/* 1. Footer SIEMPRE al fondo de la ventana (como en el PDF): */
+.footer-login {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background: transparent;
+    color: #222;
+    font-size: 1.1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2.5rem;
+    border: none;
+    z-index: 99;
+    padding: 0.7rem 0;
+    box-shadow: none;
+}
+/* 2. Footer que sube si hay mucho contenido (más flexible): */
+/*
+.footer-login {
+    position: static;
+    margin-top: auto;
+    width: 100%;
+    background: transparent;
+    color: #222;
+    font-size: 1.1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2.5rem;
+    border: none;
+    z-index: 99;
+    padding: 0.7rem 0 0.9rem 0;
+    box-shadow: none;
+}
+*/
+
+.footer-login-icons {
+    display: flex;
+    gap: 0.6rem;
+    font-size: 1.2rem;
+}
+.footer-login-icons i {
+    color: #1da1f2;
+    transition: color 0.2s;
+    cursor: pointer;
+}
+.footer-login-icons i:nth-child(2) { color: #1877f3; }
+.footer-login-icons i:nth-child(3) { color: #e4405f; }
+.footer-login-icons i:hover {
+    opacity: 0.75;
+}
