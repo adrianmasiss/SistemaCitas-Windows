@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import Header from "../components/Header";
 
 export default function Login() {
     const [showModal, setShowModal] = useState(false);
@@ -58,7 +59,6 @@ export default function Login() {
 
     return (
         <div className="login-bg">
-
             <div className="login-center">
                 <div className="login-card">
                     <h2 className="login-title">Login</h2>

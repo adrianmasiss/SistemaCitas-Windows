@@ -47,7 +47,6 @@ export default function PerfilMedico() {
 
     return (
         <div className="layout-wrapper">
-            <Header />
             <div className="contenido-principal">
                 <div className="form-container register-box">
                     <h1>Actualizar <span className="txt-medico">Perfil Médico</span></h1>
@@ -84,7 +83,6 @@ export default function PerfilMedico() {
                     </form>
                 </div>
             </div>
-            <Footer />
         </div>
     );
 }

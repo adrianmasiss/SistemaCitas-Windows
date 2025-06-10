@@ -15,6 +15,7 @@ import ConfigurarHorario from './pages/ConfigurarHorario';
 import ConfirmarCita from './pages/ConfirmarCita';
 import CitaConfirmada from './pages/CitaConfirmada';
 import HistoricoCitas from './pages/HistoricoCitas';
+import PerfilMedico from './pages/PerfilMedico';
 
 
 
@@ -41,6 +42,7 @@ function App() {
                     <Route path="/confirmarCita" element={<ConfirmarCita />} />
                     <Route path="/citaConfirmada" element={<CitaConfirmada />} />
                     <Route path="/historicoCitas" element={<HistoricoCitas />} />
+                    <Route path="/medico/perfil" element={<PerfilMedico />} />
                     {/* Aquí irán más páginas */}
                 </Routes>
             </main>
