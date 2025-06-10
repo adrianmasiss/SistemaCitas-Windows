@@ -12,6 +12,9 @@ import AdminMedicos from "./pages/AdminMedicos";
 import GestionCitasMedico from "./pages/gestionCitasMedico";
 import HorarioExtendido from "./pages/HorarioExtendido";
 import ConfigurarHorario from './pages/ConfigurarHorario';
+import ConfirmarCita from './pages/ConfirmarCita';
+import CitaConfirmada from './pages/CitaConfirmada';
+import HistoricoCitas from './pages/HistoricoCitas';
 
 
 
@@ -38,6 +41,9 @@ function App() {
                     <Route path="/medico/gestionCitas" element={<GestionCitasMedico />} />
                     <Route path="/horarioExtendido" element={<HorarioExtendido />} />
                     <Route path="/medico/configurarHorario" element={<ConfigurarHorario />} />
+                    <Route path="/confirmarCita" element={<ConfirmarCita />} />
+                    <Route path="/citaConfirmada" element={<CitaConfirmada />} />
+                    <Route path="/historicoCitas" element={<HistoricoCitas />} />
                     {/* Aquí irán más páginas */}
                 </Routes>
             </main>

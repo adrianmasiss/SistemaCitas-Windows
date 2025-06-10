@@ -42,7 +42,6 @@ export default function ConfirmarCita() {
 
     return (
         <div className="layout-wrapper">
-            <Header />
             <div className="contenido-principal">
                 <div className="confirm-cita-wrapper">
                     <div className="confirm-cita-card">
@@ -86,7 +85,6 @@ export default function ConfirmarCita() {
                     </div>
                 </div>
             </div>
-            <Footer />
         </div>
     );
 }
