@@ -59,7 +59,13 @@ export default function ConfigurarHorario() {
         fetch(`/api/horarios/medico/${medicoId}`, {
             headers: token ? { Authorization: `Bearer ${token}` } : {}
         })
-            .then(res => res.json())
+            .then(res => {
+                if (res.status === 401 || res.status === 403) {
+                    window.location.href = '/login';
+                    return [];
+                }
+                return res.json();
+            })
             .then(setHorarios)
             .catch(() => setHorarios([]));
     }, []);
@@ -68,11 +74,15 @@ export default function ConfigurarHorario() {
         setError('');
         const medicoId = localStorage.getItem('usuarioId');
         const token = localStorage.getItem('token');
+        if (!token) {
+            setError('Debe iniciar sesión');
+            return false;
+        }
         const res = await fetch('/api/horarios/crearPorRango', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                ...(token ? { Authorization: `Bearer ${token}` } : {})
+                Authorization: `Bearer ${token}`
             },
             body: JSON.stringify({
                 medicoId,
@@ -83,6 +93,10 @@ export default function ConfigurarHorario() {
                 frecuencia: parseInt(frecuencia, 10),
             }),
         });
+        if (res.status === 401 || res.status === 403) {
+            window.location.href = '/login';
+            return false;
+        }
         if (!res.ok) {
             setError(await res.text());
             return false;

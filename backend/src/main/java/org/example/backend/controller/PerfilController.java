@@ -25,6 +25,14 @@ public class PerfilController {
         Usuario usuario = usuarioService.buscarPorId(usuarioId).orElse(null);
         if (usuario == null) return ResponseEntity.notFound().build();
 
+        // Si se cambia el username, validar que no esté tomado
+        if (datosActualizados.getUsername() != null && !datosActualizados.getUsername().equals(usuario.getUsername())) {
+            if (usuarioService.existeUsername(datosActualizados.getUsername())) {
+                return ResponseEntity.badRequest().body("El nombre de usuario ya está en uso.");
+            }
+            usuario.setUsername(datosActualizados.getUsername());
+        }
+
         usuario.setNombre(datosActualizados.getNombre());
         usuario.setEspecialidad(datosActualizados.getEspecialidad());
         usuario.setCostoConsulta(datosActualizados.getCostoConsulta());

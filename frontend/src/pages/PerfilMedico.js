@@ -4,16 +4,18 @@ import Footer from '../components/Footer';
 
 export default function PerfilMedico() {
     const [medico, setMedico] = useState({
-        id: '', nombre: '', especialidad: '', costoConsulta: '',
+        id: '', username: '', nombre: '', especialidad: '', costoConsulta: '',
         localidad: '', foto: '', presentacion: ''
     });
     const [error, setError] = useState('');
     const [exito, setExito] = useState('');
 
     useEffect(() => {
+        const id = localStorage.getItem('usuarioId');
+        const token = localStorage.getItem('token');
         // Carga los datos del médico (requiere autenticación)
-        fetch('/api/medico/perfil', {
-            headers: { "Authorization": "Bearer " + localStorage.getItem('token') }
+        fetch(`/api/perfil/${id}`, {
+            headers: token ? { "Authorization": `Bearer ${token}` } : {}
         })
             .then(r => r.ok ? r.json() : Promise.reject())
             .then(data => setMedico(data))
@@ -27,8 +29,9 @@ export default function PerfilMedico() {
         setError('');
         setExito('');
         try {
-            const res = await fetch('/api/medico/perfil', {
-                method: 'POST',
+            const id = localStorage.getItem('usuarioId');
+            const res = await fetch(`/api/perfil/${id}`, {
+                method: 'PUT',
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": "Bearer " + localStorage.getItem('token')
@@ -53,6 +56,10 @@ export default function PerfilMedico() {
                     {exito && <div className="success">{exito}</div>}
                     <form onSubmit={handleSubmit}>
                         <input type="hidden" name="id" value={medico.id} />
+
+                        <label>Nombre de usuario:</label>
+                        <input type="text" name="username" required placeholder="Ej: drcarlos"
+                               value={medico.username || ''} onChange={handleChange} />
 
                         <label>Nombre completo:</label>
                         <input type="text" name="nombre" required placeholder="Ej: Dr. Carlos Pérez"
