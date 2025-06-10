@@ -21,6 +21,38 @@ export default function ConfigurarHorario() {
     const [horarios, setHorarios] = useState([]);
     const [error, setError] = useState('');
 
+    const formatTime = (time) => {
+        if (time == null) return '';
+        // Si es un array tipo [10, 0]
+        if (Array.isArray(time) && time.length >= 2) {
+            // Rellena con ceros si hace falta
+            const h = String(time[0]).padStart(2, '0');
+            const m = String(time[1]).padStart(2, '0');
+            return `${h}:${m}`;
+        }
+        // Si es un número tipo 1000, 930, etc
+        if (typeof time === 'number') {
+            const h = Math.floor(time / 100);
+            const m = time % 100;
+            return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+        }
+        // Si es string tipo "10:00" o "1000"
+        if (typeof time === 'string') {
+            if (time.includes(':')) return time.substring(0, 5);
+            // Si es "1000", "930", etc
+            const n = parseInt(time, 10);
+            if (!isNaN(n)) {
+                const h = Math.floor(n / 100);
+                const m = n % 100;
+                return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+            }
+        }
+        // Si nada de lo anterior, por defecto
+        return String(time);
+    };
+
+
+
     useEffect(() => {
         const medicoId = localStorage.getItem('usuarioId');
         const token = localStorage.getItem('token');
@@ -122,8 +154,8 @@ export default function ConfigurarHorario() {
                             {horarios.map((horario, idx) => (
                                 <tr key={idx}>
                                     <td>{horario.diaSemana}</td>
-                                    <td>{horario.horaInicio}</td>
-                                    <td>{horario.horaFin}</td>
+                                    <td>{formatTime(horario.horaInicio)}</td>
+                                    <td>{formatTime(horario.horaFin)}</td>
                                     <td>{horario.frecuencia}</td>
                                 </tr>
                             ))}

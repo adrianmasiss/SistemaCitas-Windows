@@ -84,6 +84,11 @@ public class HorarioService {
         horarioRepository.deleteById(id);
     }
 
+    public void eliminarHorariosPorMedico(Usuario medico) {
+        List<Horario> horarios = horarioRepository.findByMedico(medico);
+        horarioRepository.deleteAll(horarios);
+    }
+
     public List<Map<String, Object>> calcularDiasConVacíos(Usuario medico, LocalDate inicio, int cantidadDias) {
         List<Map<String, Object>> resultado = new ArrayList<>();
         // Obtén todos los espacios para el rango de días

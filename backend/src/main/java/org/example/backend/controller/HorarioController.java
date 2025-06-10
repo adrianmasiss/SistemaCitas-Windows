@@ -59,6 +59,16 @@ public class HorarioController {
             LocalTime horaFin = LocalTime.parse(dto.getHoraFin());
             int frecuencia = dto.getFrecuencia();
 
+
+            // Eliminar cualquier horario existente del médico para reemplazarlo por el nuevo rango
+            horarioService.eliminarHorariosPorMedico(medico);
+
+            // Actualizar en la entidad Usuario los días de trabajo
+            medico.setDiaInicioTrabajo(dto.getDiaInicio());
+            medico.setDiaFinTrabajo(dto.getDiaFin());
+            usuarioService.actualizarUsuario(medico);
+
+
             for (DiaSemana dia : obtenerDiasLaborales(inicio, fin)) {
                 java.util.List<Horario> existentes = horarioService.buscarPorMedicoYDia(medico, dia.name());
                 Horario h;
