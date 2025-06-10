@@ -25,6 +25,7 @@ public class UsuarioService {
         } else {
             usuario.setAprobado(true);
         }
+        usuario.setSesionActiva(false);
         usuario.setClave(passwordEncoder.encode(usuario.getClave()));
         return usuarioRepository.save(usuario);
     }

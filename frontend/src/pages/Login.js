@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-
 
 export default function Login() {
     const [showModal, setShowModal] = useState(false);
@@ -9,12 +8,29 @@ export default function Login() {
     const navigate = useNavigate();
     const location = useLocation();
 
+    // === OPCIÓN 1: Limpia cualquier sesión anterior cada vez que abres el login ===
+    useEffect(() => {
+        localStorage.clear();
+        sessionStorage.clear();
+    }, []);
+
+    // Si quieres que si ya hay token redirija, déjalo así (pero siempre entra limpio)
+    useEffect(() => {
+        if (localStorage.getItem('token')) {
+            navigate('/buscarCita');
+        }
+    }, [navigate]);
+
     const params = new URLSearchParams(location.search);
     const logout = params.get('logout');
     const loginError = params.get('error');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (localStorage.getItem('token')) {
+            setError('Debe cerrar sesión antes de iniciar con otra cuenta.');
+            return;
+        }
         setError('');
         try {
             const res = await fetch('/api/auth/login', {
@@ -23,13 +39,13 @@ export default function Login() {
                 body: JSON.stringify({ username: user.username, clave: user.clave })
             });
             if (res.status === 401) return setError('Usuario o contraseña inválidos.');
+            if (res.status === 403) return setError('El usuario ya tiene una sesión activa.');
             if (!res.ok) throw new Error(await res.text());
 
             const data = await res.json();
             localStorage.setItem('token', data.token);
             localStorage.setItem('rol', data.rol);
             localStorage.setItem('nombre', data.nombre);
-            // Guardar el identificador del usuario para usarlo en otras vistas
             localStorage.setItem('usuarioId', data.usuarioId);
 
             if (data.rol === 'ADMIN') navigate('/admin/medicos');

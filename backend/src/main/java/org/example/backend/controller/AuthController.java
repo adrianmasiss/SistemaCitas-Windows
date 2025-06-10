@@ -36,8 +36,29 @@ public class AuthController {
         if (usuario == null) {
             return ResponseEntity.status(401).body("Credenciales inválidas");
         }
+        if (Boolean.TRUE.equals(usuario.getSesionActiva())) {
+            return ResponseEntity.status(403).body("El usuario ya tiene una sesión activa");
+        }
+        usuario.setSesionActiva(true);
+        usuarioService.actualizarUsuario(usuario);
         String token = jwtUtils.generateToken(usuario.getUsername(), usuario.getRol());
         return ResponseEntity.ok(new LoginResponse(token, usuario.getRol(), usuario.getNombre(), usuario.getId()));
+    }
+
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(@RequestHeader(name = "Authorization", required = false) String header) {
+        if (header != null && header.startsWith("Bearer ")) {
+            String token = header.substring(7);
+            if (jwtUtils.validateJwt(token)) {
+                String username = jwtUtils.getUsernameFromJwt(token);
+                usuarioService.buscarPorUsername(username).ifPresent(u -> {
+                    u.setSesionActiva(false);
+                    usuarioService.actualizarUsuario(u);
+                });
+            }
+        }
+        return ResponseEntity.ok("Sesión cerrada");
     }
 
     @PostMapping("/registerPaciente")

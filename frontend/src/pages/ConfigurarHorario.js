@@ -64,7 +64,6 @@ export default function ConfigurarHorario() {
 
     return (
         <div className="layout-wrapper">
-            <Header />
             <div className="contenido-principal">
                 <div className="contenedor">
                     <h1>🗓️ Configurar Horario Laboral</h1>
@@ -121,7 +120,6 @@ export default function ConfigurarHorario() {
                     </form>
                 </div>
             </div>
-            <Footer />
         </div>
     );
 }

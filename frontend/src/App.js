@@ -22,13 +22,10 @@ import HistoricoCitas from './pages/HistoricoCitas';
 
 
 function App() {
-    // Simulación de sesión
-    const rol = 'PACIENTE';
-    const usuarioId = 1;
 
     return (
         <Router>
-            <Header rol={rol} usuarioId={usuarioId} />
+            <Header />
             <main>
                 <Routes>
                     <Route path="/" element={<Home />} />

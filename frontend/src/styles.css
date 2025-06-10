@@ -17,44 +17,160 @@ body {
 /* ============================================================================
    HEADER Y MENÚ SUPERIOR
 ============================================================================ */
+
+/* -- BLOQUE HEADER NUEVO Y OPTIMIZADO -- */
 .header {
     position: relative;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.8rem 2rem;
-    background-color: #e3f2fd;
-    border-bottom: 1px solid #d6eaf8;
+    background: #e8f2fc;
+    padding: 0.7rem 3vw 0.7rem 2vw;
+    box-shadow: 0 2px 4px #00000005;
+    min-height: 70px;
+    z-index: 10;
     flex-wrap: wrap;
 }
 
-.logo {
+.header-left, .logo {
     display: flex;
     align-items: center;
     font-weight: bold;
-    font-size: 1.2rem;
-    color: #2c3e50;
+    font-size: 1.3rem;
+    color: #285d7c;
+    gap: 10px;
 }
-.logo img {
-    width: 100px;
-    height: 60px;
-    margin-right: 0.5rem;
-    border-radius: 50%;
+
+.header-logo, .logo img {
+    width: 58px;
+    height: 58px;
+    border-radius: 10px;
     object-fit: cover;
+    background: #fff;
+    border: 2px solid #b6d3ee;
 }
-.menu {
+
+.header-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #285d7c;
+    letter-spacing: 0.5px;
+}
+
+.telefono-contacto {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: bold;
+    color: #ffa900;
+    font-size: 1.1rem;
+    text-align: center;
+    flex: 1 1 auto;
+    white-space: nowrap;
+}
+
+.header-menu, .menu {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.5rem;
+    margin-left: auto;
     font-weight: 500;
 }
-.menu a {
-    text-decoration: none;
-    color: #333;
-    font-weight: bold;
+.menu-rol {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
-.menu a:hover {
-    text-decoration: underline;
+
+/* Links del header */
+.menu a,
+.menu .menu-link,
+.menu button,
+.header-menu a,
+.header-menu .menu-link,
+.header-menu button {
+    text-decoration: none;
+    color: #234369;
+    font-size: 1rem;
+    background: none;
+    border: none;
+    padding: 7px 16px;
+    margin-right: 4px;
+    border-radius: 10px;
+    transition: background 0.13s, color 0.13s;
+    font-weight: 500;
+    cursor: pointer;
+    outline: none;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.menu a:hover,
+.menu .menu-link:hover,
+.menu button:hover,
+.header-menu a:hover,
+.header-menu .menu-link:hover,
+.header-menu button:hover,
+.menu .menu-link:focus,
+.menu button:focus {
+    background: #dbefff;
+    color: #009e52;
+}
+
+/* Botón activo (Mis Citas) */
+.menu-link.active,
+.btn-historial,
+.header-menu .active {
+    background: #2c72de !important;
+    color: #fff !important;
+    font-weight: bold !important;
+    box-shadow: 0 2px 6px #003c7716;
+    border: none;
+}
+
+.logout-btn,
+.header-menu .logout-btn {
+    background: none;
+    border: none;
+    color: #fd900a !important;
+    font-weight: bold;
+    font-size: 1rem;
+    margin-left: 5px;
+    border-radius: 10px;
+    transition: background 0.13s, color 0.13s;
+    padding: 7px 16px;
+}
+
+.logout-btn:hover,
+.logout-btn:focus,
+.header-menu .logout-btn:hover,
+.header-menu .logout-btn:focus {
+    background: #ffe3be;
+    color: #c54e00 !important;
+}
+
+/* Estilos diferenciales para admin/paciente, si necesitas fondo distinto */
+.header.admin {
+    background: #f4eeff;
+}
+.header.paciente {
+    background: #e3fcef;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .header {
+        flex-direction: column;
+        gap: 0.8rem;
+        padding: 1rem 1vw;
+        min-height: 90px;
+    }
+    .telefono-contacto {
+        position: static;
+        transform: none;
+        margin-top: 6px;
+        margin-bottom: 0.5rem;
+    }
 }
 
 /* ============================================================================
@@ -119,6 +235,8 @@ body {
 .btn-cancel:hover, .modal-cancel:hover {
     background: #b3b3b3;
 }
+
+
 
 /* ============================================================================
    LOGIN

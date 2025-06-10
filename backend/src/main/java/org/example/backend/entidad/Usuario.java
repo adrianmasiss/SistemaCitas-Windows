@@ -69,6 +69,14 @@ public class Usuario implements Serializable {
         this.primerIngreso = primerIngreso;
     }
 
+    public Boolean getSesionActiva() {
+        return sesionActiva;
+    }
+
+    public void setSesionActiva(Boolean sesionActiva) {
+        this.sesionActiva = sesionActiva;
+    }
+
     public String getEspecialidad() {
         return especialidad;
     }
@@ -130,6 +138,7 @@ public class Usuario implements Serializable {
     private String rol;
     private Boolean aprobado;
     private Boolean primerIngreso;
+    private Boolean sesionActiva;
 
     // Para médicos
     private String especialidad;
@@ -144,7 +153,4 @@ public class Usuario implements Serializable {
 
     public Usuario() {}
 
-    // Getters y Setters
-    // (Usa tu IDE para generarlos)
-    // ... omitido aquí por espacio ...
 }
