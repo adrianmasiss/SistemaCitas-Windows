@@ -23,19 +23,25 @@ export default function ConfigurarHorario() {
 
     useEffect(() => {
         const medicoId = localStorage.getItem('usuarioId');
-        fetch(`/api/horarios/medico/${medicoId}`)
+        const token = localStorage.getItem('token');
+        fetch(`/api/horarios/medico/${medicoId}`, {
+            headers: token ? { Authorization: `Bearer ${token}` } : {}
+        })
             .then(res => res.json())
             .then(setHorarios)
             .catch(() => setHorarios([]));
     }, []);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const crearHorario = async () => {
         setError('');
         const medicoId = localStorage.getItem('usuarioId');
-        fetch('/api/horarios/crearPorRango', {
+        const token = localStorage.getItem('token');
+        const res = await fetch('/api/horarios/crearPorRango', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                ...(token ? { Authorization: `Bearer ${token}` } : {})
+            },
             body: JSON.stringify({
                 medicoId,
                 diaInicio,
@@ -44,23 +50,33 @@ export default function ConfigurarHorario() {
                 horaFin,
                 frecuencia: parseInt(frecuencia, 10),
             }),
-        })
-            .then(res => {
-                if (!res.ok) return res.text().then(setError);
-                // Limpiar el formulario
-                setHoraInicio('');
-                setHoraFin('');
-                setFrecuencia('');
-                // Recargar horarios después de crear
-                return fetch(`/api/horarios/medico/${medicoId}`).then(r => r.json()).then(setHorarios);
-            })
-            .catch(() => setError('Error al crear horario'));
+        });
+        if (!res.ok) {
+            setError(await res.text());
+            throw new Error('Error');
+        }
+        setHoraInicio('');
+        setHoraFin('');
+        setFrecuencia('');
+        const horariosRes = await fetch(`/api/horarios/medico/${medicoId}`, {
+            headers: token ? { Authorization: `Bearer ${token}` } : {}
+        });
+        setHorarios(await horariosRes.json());
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        crearHorario().catch(() => setError('Error al crear horario'));
     };
 
     const handleFinalizar = (e) => {
         e.preventDefault();
-        window.location.href = "/medico/gestionCitas";
+        const promise = (horaInicio && horaFin && frecuencia) ? crearHorario() : Promise.resolve();
+        promise.finally(() => {
+            if (!error) window.location.href = "/medico/gestionCitas";
+        });
     };
+
 
     return (
         <div className="layout-wrapper">

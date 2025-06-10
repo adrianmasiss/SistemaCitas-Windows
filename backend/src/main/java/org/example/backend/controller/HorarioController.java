@@ -2,7 +2,9 @@
 package org.example.backend.controller;
 
 import org.example.backend.dto.HorarioDTO;
+import org.example.backend.dto.HorarioRangoDTO;
 import org.example.backend.entidad.Horario;
+import org.example.backend.entidad.DiaSemana;
 import org.example.backend.entidad.Usuario;
 import org.example.backend.servicio.HorarioService;
 import org.example.backend.servicio.UsuarioService;
@@ -37,5 +39,46 @@ public class HorarioController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error al crear horario: " + e.getMessage());
         }
+    }
+
+    @GetMapping("/medico/{id}")
+    public ResponseEntity<?> listarPorMedico(@PathVariable Long id) {
+        Usuario medico = usuarioService.buscarPorId(id).orElse(null);
+        if (medico == null) return ResponseEntity.badRequest().body("Médico no encontrado");
+        return ResponseEntity.ok(horarioService.listarHorariosPorMedico(medico));
+    }
+
+    @PostMapping("/crearPorRango")
+    public ResponseEntity<?> crearPorRango(@RequestBody HorarioRangoDTO dto) {
+        Usuario medico = usuarioService.buscarPorId(dto.getMedicoId()).orElse(null);
+        if (medico == null) return ResponseEntity.badRequest().body("Médico no encontrado");
+        try {
+            DiaSemana inicio = DiaSemana.valueOf(dto.getDiaInicio());
+            DiaSemana fin = DiaSemana.valueOf(dto.getDiaFin());
+            LocalTime horaInicio = LocalTime.parse(dto.getHoraInicio());
+            LocalTime horaFin = LocalTime.parse(dto.getHoraFin());
+            int frecuencia = dto.getFrecuencia();
+
+            for (DiaSemana dia : obtenerDiasLaborales(inicio, fin)) {
+                Horario h = new Horario(dia.name(), horaInicio, horaFin, frecuencia, medico);
+                horarioService.crearHorario(h);
+            }
+            return ResponseEntity.ok("Horarios creados");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error al crear horarios: " + e.getMessage());
+        }
+    }
+
+    private java.util.List<DiaSemana> obtenerDiasLaborales(DiaSemana inicio, DiaSemana fin) {
+        DiaSemana[] dias = DiaSemana.values();
+        java.util.List<DiaSemana> resultado = new java.util.ArrayList<>();
+        int start = inicio.ordinal();
+        int end = fin.ordinal();
+        int i = start;
+        do {
+            resultado.add(dias[i]);
+            i = (i + 1) % dias.length;
+        } while (i != (end + 1) % dias.length);
+        return resultado;
     }
 }
