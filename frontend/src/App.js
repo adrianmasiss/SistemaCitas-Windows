@@ -15,6 +15,9 @@ import ConfigurarHorario from './pages/ConfigurarHorario';
 
 
 
+
+
+
 function App() {
     // Simulación de sesión
     const rol = 'PACIENTE';

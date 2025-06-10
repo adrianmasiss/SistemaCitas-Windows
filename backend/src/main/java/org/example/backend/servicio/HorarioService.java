@@ -79,4 +79,27 @@ public class HorarioService {
     public void eliminarHorario(Long id) {
         horarioRepository.deleteById(id);
     }
+
+    public List<Map<String, Object>> calcularDiasConVacíos(Usuario medico, LocalDate inicio, int cantidadDias) {
+        List<Map<String, Object>> resultado = new ArrayList<>();
+        // Obtén todos los espacios para el rango de días
+        List<EspacioDTO> espacios = calcularNdias(medico, inicio, cantidadDias);
+        // Agrupa los espacios por fecha (String)
+        Map<String, List<EspacioDTO>> agrupados = new HashMap<>();
+        for (EspacioDTO esp : espacios) {
+            String fecha = esp.getFecha().toString();
+            agrupados.computeIfAbsent(fecha, f -> new ArrayList<>()).add(esp);
+        }
+        // Para cada día del rango, arma el objeto (aunque no haya espacios)
+        for (int i = 0; i < cantidadDias; i++) {
+            LocalDate fecha = inicio.plusDays(i);
+            String fechaStr = fecha.toString();
+            Map<String, Object> dia = new HashMap<>();
+            dia.put("fecha", fechaStr);
+            dia.put("slots", agrupados.getOrDefault(fechaStr, new ArrayList<>()));
+            resultado.add(dia);
+        }
+        return resultado;
+    }
+
 }

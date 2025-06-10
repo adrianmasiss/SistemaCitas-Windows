@@ -1471,8 +1471,6 @@ html, body {
     font-weight: 500;
 }
 
-/* -------- SOLO DEJA UNO DE ESTOS FOOTER SEGÚN TU NECESIDAD -------- */
-/* 1. Footer SIEMPRE al fondo de la ventana (como en el PDF): */
 .footer-login {
     position: fixed;
     left: 0;
@@ -1490,25 +1488,128 @@ html, body {
     padding: 0.7rem 0;
     box-shadow: none;
 }
-/* 2. Footer que sube si hay mucho contenido (más flexible): */
-/*
-.footer-login {
-    position: static;
-    margin-top: auto;
-    width: 100%;
-    background: transparent;
-    color: #222;
-    font-size: 1.1rem;
+
+.horario-extendido-wrapper {
+    max-width: 900px;
+    margin: 2.5rem auto;
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 6px 22px rgba(0,0,0,0.07);
+    padding: 2rem;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    gap: 2.5rem;
-    border: none;
-    z-index: 99;
-    padding: 0.7rem 0 0.9rem 0;
-    box-shadow: none;
 }
-*/
+
+.doctor-info {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 1.4rem;
+}
+
+.doctor-img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #e0e0e0;
+}
+
+.horario-extendido-nav {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    margin-bottom: 2rem;
+    gap: 8px;
+}
+
+.btn-nav {
+    background: #eaf0fb;
+    color: #007bff;
+    border: none;
+    border-radius: 18px;
+    font-weight: bold;
+    padding: 6px 16px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.btn-nav:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+.btn-nav:not(:disabled):hover {
+    background: #d4e7fb;
+}
+
+.horario-extendido-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+    width: 100%;
+}
+
+.horario-card {
+    min-width: 210px;
+    background: #fafcff;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 18px;
+    box-shadow: 0 2px 8px rgba(180,200,220,0.05);
+    padding: 1.2rem 1.2rem 1.1rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.horario-card-header {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #e67e22;
+    margin-bottom: 0.8rem;
+}
+
+.horario-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    width: 100%;
+    align-items: center;
+}
+
+.slot-ext {
+    background: #36d27a;
+    color: white;
+    border-radius: 11px;
+    padding: 7px 18px;
+    font-weight: 600;
+    font-size: 1rem;
+    box-shadow: 0 2px 5px rgba(0,150,60,0.06);
+}
+
+.sin-horarios {
+    color: #888;
+    background: #f6f6f8;
+    border-radius: 10px;
+    padding: 8px 0;
+    font-style: italic;
+    width: 100%;
+    text-align: center;
+}
+
+@media (max-width: 900px) {
+    .horario-extendido-cards {
+        gap: 1.1rem;
+    }
+    .horario-card {
+        min-width: 165px;
+        padding: 0.9rem;
+    }
+}
+
+
+
 
 .footer-login-icons {
     display: flex;

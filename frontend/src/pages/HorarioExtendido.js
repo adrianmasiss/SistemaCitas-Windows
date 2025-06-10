@@ -1,102 +1,55 @@
-import React, { useEffect, useState } from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import React from "react";
+import "../styles.css"; // Asegúrate de que aquí apunte a tu CSS global
 
-// Base URL del controlador en el backend
-const API_URL = '/api/horario-extendido';
-
-export default function HorarioExtendido() {
-    const [params] = useSearchParams();
-    const medicoId = params.get('medicoId');
-    const offset = parseInt(params.get('offset') || '1', 10);
-
-    const [medico, setMedico] = useState({});
-    const [espacios, setEspacios] = useState([]);
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const res = await fetch(`${API_URL}?medicoId=${medicoId}&offset=${offset}&dias=7`);
-            if (!res.ok) return;
-            const data = await res.json();
-            setMedico(data.medico || {});
-            setEspacios(data.espaciosAgrupados || []);
-        };
-
-        fetchData();
-        // eslint-disable-next-line
-    }, [medicoId, offset]);
+export default function HorarioExtendido({ medico, espaciosAgrupados, onNext, onPrev, disableNext, disablePrev }) {
+    if (!medico) {
+        return <div style={{ textAlign: "center", marginTop: "2rem" }}>Cargando datos del médico...</div>;
+    }
 
     return (
-        <div>
-            <div className="horario-ext-card">
-                {/* Navegación y médico */}
-                <div className="fila-superior">
-                    <div>
-                        {offset > 1 && (
-                            <button
-                                className="btn-navegacion"
-                                onClick={() => navigate(`/horarioExtendido?medicoId=${medicoId}&offset=${offset - 1}`)}
-                            >
-                                ← Prev
-                            </button>
-                        )}
-                    </div>
-                    <div className="info-medico">
-                        <img
-                            src={medico.foto && medico.foto !== "" ? medico.foto : "/images/profile.png"}
-                            alt="Foto"
-                        />
-                        <div>
-                            <b style={{ color: "#2c3e50" }}>{medico.nombre}</b><br />
-                            <span style={{ color: "#27ae60" }}>₡{medico.costoConsulta}</span><br />
-                            <span>{medico.especialidad}</span>
-                        </div>
-                    </div>
-                    <div>
-                        {offset + 1 <= 30 && (
-                            <button
-                                className="btn-navegacion"
-                                onClick={() => navigate(`/horarioExtendido?medicoId=${medicoId}&offset=${offset + 1}`)}
-                            >
-                                Next →
-                            </button>
-                        )}
-                    </div>
-                </div>
-                <div className="ubicacion">{medico.localidad}</div>
-                {/* Horarios por día */}
-                <div className="horarios-toggle">
-                    {espacios.length === 0 ? (
-                        <span style={{ color: "#888" }}>No hay horarios para mostrar.</span>
-                    ) : (
-                        espacios.map(grupo => (
-                            <div key={grupo.fecha} className="fecha-col">
-                                <h4>{grupo.fecha}</h4>
-                                {grupo.slots.map((slot, idx) => (
-                                    <div
-                                        key={idx}
-                                        className={`slot${!slot.disponible ? ' reservado' : ''}`}
-                                    >
-                                        {slot.disponible ? (
-                                            <a
-                                                href={`/confirmarCita?medicoId=${medicoId}&fechaHora=${slot.fechaHoraFormateada}`}
-                                            >
-                                                {slot.horaFormateada || slot.hora}
-                                            </a>
-                                        ) : (
-                                            <span>{slot.horaFormateada || slot.hora}</span>
-                                        )}
-                                    </div>
-                                ))}
-                            </div>
-                        ))
-                    )}
+        <div className="horario-extendido-wrapper">
+            {/* Info del médico */}
+            <div className="doctor-info">
+                <img
+                    src={medico.foto && medico.foto !== "" ? medico.foto : "/images/profile.png"}
+                    alt={medico.nombre}
+                    className="doctor-img"
+                />
+                <div>
+                    <b style={{ color: "#2c3e50", fontSize: "1.1rem" }}>{medico.nombre}</b><br />
+                    <span style={{ color: "#009e52", fontWeight: "bold" }}>₡{medico.costoConsulta}</span>
+                    <div style={{ color: "#555" }}>{medico.especialidad}</div>
+                    <div style={{ color: "#777", marginTop: 4 }}>{medico.localidad}</div>
                 </div>
             </div>
-            <div className="volver-container" style={{ textAlign: "center", marginTop: "2rem" }}>
-                <button className="btn-volver-ext" onClick={() => navigate('/buscarCita')}>← Volver a buscar</button>
+
+            {/* Botones navegación */}
+            <div className="horario-extendido-nav">
+                <button className="btn-nav" onClick={onPrev} disabled={disablePrev}>Prev</button>
+                <button className="btn-nav" onClick={onNext} disabled={disableNext} style={{ marginLeft: 8 }}>Next →</button>
+            </div>
+
+            {/* Tarjetas de horarios */}
+            <div className="horario-extendido-cards">
+                {espaciosAgrupados.map(({ fecha, slots }) => (
+                    <div className="horario-card" key={fecha}>
+                        <div className="horario-card-header">
+                            {/* Formato dd/MM/yyyy */}
+                            {fecha.split("-").reverse().join("/")}
+                        </div>
+                        <div className="horario-card-body">
+                            {slots.length === 0 ? (
+                                <div className="sin-horarios">Sin horarios</div>
+                            ) : (
+                                slots.map((slot, idx) => (
+                                    <div className="slot-ext" key={idx}>
+                                        <span>{slot.horaFormateada || slot.hora}</span>
+                                    </div>
+                                ))
+                            )}
+                        </div>
+                    </div>
+                ))}
             </div>
         </div>
     );
