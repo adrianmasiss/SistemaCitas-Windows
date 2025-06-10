@@ -76,6 +76,10 @@ public class HorarioService {
         return horarioRepository.save(horario);
     }
 
+    public List<Horario> buscarPorMedicoYDia(Usuario medico, String diaSemana) {
+        return horarioRepository.findByMedicoAndDiaSemana(medico, diaSemana);
+    }
+
     public void eliminarHorario(Long id) {
         horarioRepository.deleteById(id);
     }

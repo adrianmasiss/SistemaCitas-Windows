@@ -53,7 +53,7 @@ export default function ConfigurarHorario() {
         });
         if (!res.ok) {
             setError(await res.text());
-            throw new Error('Error');
+            return false;
         }
         setHoraInicio('');
         setHoraFin('');
@@ -62,6 +62,7 @@ export default function ConfigurarHorario() {
             headers: token ? { Authorization: `Bearer ${token}` } : {}
         });
         setHorarios(await horariosRes.json());
+        return true;
     };
 
     const handleSubmit = (e) => {
@@ -69,12 +70,13 @@ export default function ConfigurarHorario() {
         crearHorario().catch(() => setError('Error al crear horario'));
     };
 
-    const handleFinalizar = (e) => {
+    const handleFinalizar = async (e) => {
         e.preventDefault();
-        const promise = (horaInicio && horaFin && frecuencia) ? crearHorario() : Promise.resolve();
-        promise.finally(() => {
-            if (!error) window.location.href = "/medico/gestionCitas";
-        });
+        let ok = true;
+        if (horaInicio && horaFin && frecuencia) {
+            ok = await crearHorario();
+        }
+        if (ok) window.location.href = "/medico/gestionCitas";
     };
 
 

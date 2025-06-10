@@ -60,10 +60,24 @@ public class HorarioController {
             int frecuencia = dto.getFrecuencia();
 
             for (DiaSemana dia : obtenerDiasLaborales(inicio, fin)) {
-                Horario h = new Horario(dia.name(), horaInicio, horaFin, frecuencia, medico);
+                java.util.List<Horario> existentes = horarioService.buscarPorMedicoYDia(medico, dia.name());
+                Horario h;
+                if (existentes.isEmpty()) {
+                    h = new Horario(dia.name(), horaInicio, horaFin, frecuencia, medico);
+                } else {
+                    h = existentes.get(0);
+                    for (int i = 1; i < existentes.size(); i++) {
+                        horarioService.eliminarHorario(existentes.get(i).getId());
+                    }
+                }
+                h.setHoraInicio(horaInicio);
+                h.setHoraFin(horaFin);
+                h.setFrecuencia(frecuencia);
+                h.setMedico(medico);
+                h.setDiaSemana(dia.name());
                 horarioService.crearHorario(h);
             }
-            return ResponseEntity.ok("Horarios creados");
+            return ResponseEntity.ok("Horarios actualizados");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error al crear horarios: " + e.getMessage());
         }
