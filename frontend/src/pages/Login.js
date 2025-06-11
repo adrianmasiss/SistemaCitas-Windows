@@ -12,7 +12,6 @@ export default function Login() {
     // === OPCIÓN 1: Limpia cualquier sesión anterior cada vez que abres el login ===
     useEffect(() => {
         localStorage.clear();
-        sessionStorage.clear();
     }, []);
 
     // Si quieres que si ya hay token redirija, déjalo así (pero siempre entra limpio)
@@ -25,6 +24,7 @@ export default function Login() {
     const params = new URLSearchParams(location.search);
     const logout = params.get('logout');
     const loginError = params.get('error');
+    const redirectPath = params.get('redirect');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -57,10 +57,23 @@ export default function Login() {
             localStorage.setItem('rol', data.rol);
             localStorage.setItem('nombre', data.nombre);
             localStorage.setItem('usuarioId', data.usuarioId);
-
-            if (data.rol === 'ADMIN') navigate('/admin/medicos');
-            else if (data.rol === 'MEDICO') navigate('/medico/gestionCitas');
-            else navigate('/buscarCita');
+            if (data.rol === 'ADMIN') {
+                navigate('/admin/medicos');
+            } else if (data.rol === 'MEDICO') {
+                navigate('/medico/gestionCitas');
+            } else {
+                if (redirectPath === 'confirmarCita') {
+                    const citaState = sessionStorage.getItem('confirmarCitaState');
+                    navigate('/confirmarCita', {
+                        state: citaState ? JSON.parse(citaState) : {}
+                    });
+                    sessionStorage.removeItem('confirmarCitaState');
+                } else if (redirectPath) {
+                    navigate('/' + redirectPath);
+                } else {
+                    navigate('/buscarCita');
+                }
+            }
         } catch (err) {
             setError('Hubo un error inesperado. Intenta de nuevo.');
         }

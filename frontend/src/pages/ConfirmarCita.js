@@ -7,13 +7,27 @@ export default function ConfirmarCita() {
 
     useEffect(() => {
         if (!localStorage.getItem('token')) {
-            navigate('/login');
+            if (location.state) {
+                sessionStorage.setItem('confirmarCitaState', JSON.stringify(location.state));
+            }
+            navigate('/login?redirect=confirmarCita');
         }
-    }, [navigate]);
+    }, [navigate, location.state]);
+
+    useEffect(() => {
+        if (localStorage.getItem('token')) {
+            sessionStorage.removeItem('confirmarCitaState');
+        }
+    }, []);
+
+    // Recibe info por state o por sessionStorage (como fallback)
+    const citaState = location.state || (() => {
+        const stored = sessionStorage.getItem('confirmarCitaState');
+        return stored ? JSON.parse(stored) : {};
+    })();
 
     // Recibe info por state o por params (como fallback)
-    const { medicoId, medicoNombre, medicoFoto, fechaHora, ubicacion, medicoEspecialidad = '', medicoCostoConsulta = '' } = location.state || {};
-
+    const { medicoId, medicoNombre, medicoFoto, fechaHora, ubicacion, medicoEspecialidad = '', medicoCostoConsulta = '' } = citaState;
     const normalizarFechaHora = (str) => {
         let match = str && str.match(/^(\d{4}),(\d{1,2}),(\d{1,2})T(\d{1,2}),(\d{1,2})$/);
         if (match) {
