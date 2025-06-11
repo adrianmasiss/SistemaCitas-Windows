@@ -39,9 +39,18 @@ export default function Login() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ username: user.username, clave: user.clave })
             });
-            if (res.status === 401) return setError('Usuario o contraseña inválidos.');
-            if (res.status === 403) return setError('El usuario ya tiene una sesión activa.');
-            if (!res.ok) throw new Error(await res.text());
+
+            if (res.status === 401) {
+                return setError(await res.text());
+            }
+
+            if (res.status === 403) {
+                return setError(await res.text());
+            }
+
+            if (!res.ok) {
+                throw new Error(await res.text());
+            }
 
             const data = await res.json();
             localStorage.setItem('token', data.token);
