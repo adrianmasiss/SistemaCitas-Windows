@@ -39,6 +39,12 @@ public class UsuarioService {
     public Usuario autenticarApi(String username, String clave) {
         return usuarioRepository.findByUsername(username)
                 .filter(u -> passwordEncoder.matches(clave, u.getClave()))
+                .filter(u -> {
+                    if ("MEDICO".equalsIgnoreCase(u.getRol())) {
+                        return Boolean.TRUE.equals(u.getAprobado());
+                    }
+                    return true;
+                })
                 .orElse(null);
     }
 

@@ -48,7 +48,7 @@ public class HomeController {
                 break;
             case "MEDICO":
                 if (!usuario.getAprobado()) {
-                    response.put("error", "Médico no aprobado");
+                    response.put("error", "El medico no ha sido aprobado por el admin aun");
                     response.put("redirect", "/login?noAprobado");
                     return response;
                 }

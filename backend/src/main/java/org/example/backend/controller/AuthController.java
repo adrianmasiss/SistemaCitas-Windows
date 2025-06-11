@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -34,7 +35,10 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody LoginRequest req) {
         Usuario usuario = usuarioService.autenticarApi(req.getUsername(), req.getClave());
         if (usuario == null) {
-            return ResponseEntity.status(401).body("Credenciales inválidas");
+            return usuarioService.buscarPorUsername(req.getUsername())
+                    .filter(u -> "MEDICO".equalsIgnoreCase(u.getRol()) && !Boolean.TRUE.equals(u.getAprobado()))
+                    .map(u -> ResponseEntity.status(403).body("Médico no aprobado"))
+                    .orElseGet(() -> ResponseEntity.status(401).body("Credenciales inválidas"));
         }
         if (Boolean.TRUE.equals(usuario.getSesionActiva())) {
             return ResponseEntity.status(403).body("El usuario ya tiene una sesión activa");

@@ -21,7 +21,7 @@ public class MyUserDetailsService implements UserDetailsService {
 
         // Si es médico y no aprobado, rechaza el login
         if ("MEDICO".equalsIgnoreCase(usuario.getRol()) && !Boolean.TRUE.equals(usuario.getAprobado())) {
-            throw new UsernameNotFoundException("Médico no aprobado: " + username);
+            throw new UsernameNotFoundException("El medico no ha sido aprobado por el admin aun: " + username);
         }
 
         return new org.springframework.security.core.userdetails.User(
