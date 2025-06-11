@@ -37,7 +37,7 @@ public class AuthController {
         if (usuario == null) {
             return usuarioService.buscarPorUsername(req.getUsername())
                     .filter(u -> "MEDICO".equalsIgnoreCase(u.getRol()) && !Boolean.TRUE.equals(u.getAprobado()))
-                    .map(u -> ResponseEntity.status(403).body("Médico no aprobado"))
+                    .map(u -> ResponseEntity.status(403).body("Médico no aprobado, necesita aprobacion de un admin"))
                     .orElseGet(() -> ResponseEntity.status(401).body("Credenciales inválidas"));
         }
         if (Boolean.TRUE.equals(usuario.getSesionActiva())) {

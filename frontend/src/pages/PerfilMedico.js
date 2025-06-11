@@ -30,22 +30,20 @@ export default function PerfilMedico() {
         setExito('');
         try {
             const id = localStorage.getItem('usuarioId');
+            const { username, ...datos } = medico;
             const res = await fetch(`/api/perfil/${id}`, {
                 method: 'PUT',
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": "Bearer " + localStorage.getItem('token')
                 },
-                body: JSON.stringify(medico)
+                body: JSON.stringify(datos)
             });
             if (!res.ok) {
                 setError(await res.text());
                 return;
             }
             setExito('Perfil actualizado correctamente.');
-            if (localStorage.getItem('primerIngreso') === 'true') {
-                window.location.href = '/medico/configurarHorario';
-            }
         } catch (err) {
             setError('Error al actualizar.');
         }
@@ -58,34 +56,39 @@ export default function PerfilMedico() {
                     <h1>Actualizar <span className="txt-medico">Perfil Médico</span></h1>
                     {exito && <div className="success">{exito}</div>}
                     <form onSubmit={handleSubmit}>
-                        <input type="hidden" name="id" value={medico.id} />
+                        <input type="hidden" name="id" value={medico.id}/>
 
-                        <label>Nombre de usuario:</label>
-                        <input type="text" name="username" required placeholder="Ej: drcarlos"
-                               value={medico.username || ''} onChange={handleChange} />
+
+                        
+
+                        {/*<label>Nombre de usuario:</label>
+                        <input type="text" name="username" disabled value={medico.username || ''}/>*/}
+
+
 
                         <label>Nombre completo:</label>
                         <input type="text" name="nombre" required placeholder="Ej: Dr. Carlos Pérez"
-                               value={medico.nombre || ''} onChange={handleChange} />
+                               value={medico.nombre || ''} onChange={handleChange}/>
 
                         <label>Especialidad:</label>
                         <input type="text" name="especialidad" required placeholder="Ej: Cardiología"
-                               value={medico.especialidad || ''} onChange={handleChange} />
+                               value={medico.especialidad || ''} onChange={handleChange}/>
 
                         <label>Costo Consulta:</label>
                         <input type="number" step="0.01" name="costoConsulta" required placeholder="₡35000"
-                               value={medico.costoConsulta || ''} onChange={handleChange} />
+                               value={medico.costoConsulta || ''} onChange={handleChange}/>
 
                         <label>Localidad:</label>
                         <input type="text" name="localidad" required placeholder="Ej: Heredia"
-                               value={medico.localidad || ''} onChange={handleChange} />
+                               value={medico.localidad || ''} onChange={handleChange}/>
 
                         <label>URL Foto:</label>
                         <input type="text" name="foto" placeholder="https://..."
-                               value={medico.foto || ''} onChange={handleChange} />
+                               value={medico.foto || ''} onChange={handleChange}/>
 
                         <label>Presentación:</label>
-                        <textarea name="presentacion" placeholder="Ej: Soy médico general con experiencia en atención pediátrica..."
+                        <textarea name="presentacion"
+                                  placeholder="Ej: Soy médico general con experiencia en atención pediátrica..."
                                   value={medico.presentacion || ''} onChange={handleChange}></textarea>
 
                         {error && <div className="error">{error}</div>}
