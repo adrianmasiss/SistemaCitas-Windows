@@ -44,6 +44,10 @@ export default function PerfilMedico() {
                 return;
             }
             setExito('Perfil actualizado correctamente.');
+            const primerIngreso = localStorage.getItem('primerIngreso') === 'true';
+            if (primerIngreso) {
+                window.location.href = '/medico/configurarHorario';
+            }
         } catch (err) {
             setError('Error al actualizar.');
         }
@@ -59,7 +63,7 @@ export default function PerfilMedico() {
                         <input type="hidden" name="id" value={medico.id}/>
 
 
-                        
+
 
                         {/*<label>Nombre de usuario:</label>
                         <input type="text" name="username" disabled value={medico.username || ''}/>*/}
