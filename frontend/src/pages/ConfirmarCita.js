@@ -10,18 +10,41 @@ export default function ConfirmarCita() {
     // Recibe info por state o por params (como fallback)
     const { medicoId, medicoNombre, medicoFoto, fechaHora, ubicacion } = location.state || {};
 
-    // Corrige el formato de la fecha para todos los navegadores
+
+    const normalizarFechaHora = (str) => {
+        // Si el string trae comas, transformarlo a formato estándar
+        // Ejemplo: "2025,6,11T8,0" => "2025-06-11T08:00"
+        let match = str.match(/^(\d{4}),(\d{1,2}),(\d{1,2})T(\d{1,2}),(\d{1,2})$/);
+        if (match) {
+            let [_, year, month, day, hour, minute] = match;
+            // Asegura 2 dígitos para mes, día, hora, minuto
+            month = month.padStart(2, '0');
+            day = day.padStart(2, '0');
+            hour = hour.padStart(2, '0');
+            minute = minute.padStart(2, '0');
+            return `${year}-${month}-${day}T${hour}:${minute}`;
+        }
+        // Si ya está bien, solo reenvía
+        return str;
+    };
+
     const getFechaFormateada = (fechaHora) => {
-        if (!fechaHora) return "";
-        let fh = fechaHora.replace(" ", "T");
-        if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(fh)) fh += ":00";
-        const date = new Date(fh);
+        if (!fechaHora) return "Fecha no válida";
+        const str = normalizarFechaHora(fechaHora.includes(' ') ? fechaHora.replace(' ', 'T') : fechaHora);
+
+        const date = new Date(str);
         if (isNaN(date.getTime())) return "Fecha no válida";
         return date.toLocaleString('es-CR', {
-            year: 'numeric', month: '2-digit', day: '2-digit',
-            hour: '2-digit', minute: '2-digit'
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
         });
     };
+
+
+
 
     if (!medicoId || !medicoNombre || !fechaHora || !ubicacion) {
         return (
