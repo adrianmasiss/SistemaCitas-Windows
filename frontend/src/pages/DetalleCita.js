@@ -1,7 +1,6 @@
 import React from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { formatFechaHora } from '../utils/dateUtils';
 
 export default function DetalleCita() {
     const location = useLocation();
@@ -45,12 +44,7 @@ export default function DetalleCita() {
                             <p>
                                 <i className="fas fa-calendar-alt"></i>
                                 <strong>Fecha y Hora:</strong>{" "}
-                                {cita.fechaHora
-                                    ? new Date(cita.fechaHora).toLocaleString('es-CR', {
-                                        year: 'numeric', month: '2-digit', day: '2-digit',
-                                        hour: '2-digit', minute: '2-digit'
-                                    })
-                                    : ''}
+                                {cita.fechaHora ? formatFechaHora(cita.fechaHora) : ''}
                             </p>
                             <p>
                                 <i className="fas fa-briefcase-medical"></i>

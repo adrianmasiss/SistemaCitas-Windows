@@ -2,27 +2,27 @@ import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { useNavigate } from 'react-router-dom';
+import { formatFechaHora } from '../utils/dateUtils';
 
-const usuarioId = localStorage.getItem('usuarioId');
-// Endpoint para obtener el historial del paciente logueado
-const API_URL = `/api/historico-citas/paciente/${usuarioId}`;
 
 export default function HistoricoCitas() {
     const [citas, setCitas] = useState([]);
     const [estado, setEstado] = useState('');
     const [medico, setMedico] = useState('');
     const [loading, setLoading] = useState(true);
+    const [usuarioId, setUsuarioId] = useState(null);
     const navigate = useNavigate();
 
     // Cargar historial con filtros
-    const fetchCitas = async () => {
+    const fetchCitas = async (id) => {
+        if (!id) return;
         setLoading(true);
         try {
             let query = [];
             if (estado) query.push(`estado=${estado}`);
             if (medico) query.push(`medico=${encodeURIComponent(medico)}`);
-            const url = query.length ? `${API_URL}?${query.join('&')}` : API_URL;
-            const res = await fetch(url, {
+            const apiUrl = `/api/historico-citas/paciente/${id}`;
+            const url = query.length ? `${apiUrl}?${query.join('&')}` : apiUrl;            const res = await fetch(url, {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             });
             if (!res.ok) throw new Error("Error al cargar el historial");
@@ -34,38 +34,22 @@ export default function HistoricoCitas() {
         setLoading(false);
     };
 
-    useEffect(() => { fetchCitas(); /* eslint-disable-next-line */ }, []);
+    useEffect(() => {
+        const id = localStorage.getItem('usuarioId');
+        const token = localStorage.getItem('token');
+        if (!id || !token) {
+            navigate('/login');
+            return;
+        }
+        setUsuarioId(id);
+        fetchCitas(id);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const handleBuscar = e => {
         e.preventDefault();
-        fetchCitas();
+        fetchCitas(usuarioId);
     };
-
-    const parseFechaHora = (fh) => {
-        if (!fh) return new Date(NaN);
-        if (Array.isArray(fh)) {
-            const [y, m = 1, d = 1, h = 0, mi = 0, s = 0] = fh;
-            return new Date(y, m - 1, d, h, mi, s);
-        }
-        if (typeof fh === 'string') {
-            const match = fh.match(/^(\d{4}),(\d{1,2}),(\d{1,2})T(\d{1,2}),(\d{1,2})$/);
-            if (match) {
-                let [, year, month, day, hour, minute] = match;
-                month = month.padStart(2, '0');
-                day = day.padStart(2, '0');
-                hour = hour.padStart(2, '0');
-                minute = minute.padStart(2, '0');
-                return new Date(`${year}-${month}-${day}T${hour}:${minute}`);
-            }
-        }
-        return new Date(fh);
-    };
-
-    const formatFechaHora = (fh) => {
-        const date = parseFechaHora(fh);
-        return isNaN(date.getTime()) ? 'Fecha no válida' : date.toLocaleString('es-CR');
-    };
-
 
     // Ver detalle
     const verDetalle = (cita) => {

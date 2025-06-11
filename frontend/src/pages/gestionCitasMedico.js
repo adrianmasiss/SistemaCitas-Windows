@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import { formatFechaHora } from '../utils/dateUtils';
 
 // Cambia a tu endpoint real
 const API_URL = '/api/medico/citas';
@@ -111,8 +110,7 @@ export default function GestionCitasMedico() {
                             <tbody>
                             {citas.map(cita => (
                                 <tr key={cita.id}>
-                                    <td>{new Date(cita.fechaHora).toLocaleString('es-CR')}</td>
-                                    <td>{cita.paciente?.nombre}</td>
+                                    <td>{formatFechaHora(cita.fechaHora)}</td>                                    <td>{cita.paciente?.nombre}</td>
                                     <td>{cita.estado}</td>
                                     <td>{cita.anotaciones || ""}</td>
                                     <td>
