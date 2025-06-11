@@ -57,10 +57,18 @@ export default function Login() {
             localStorage.setItem('rol', data.rol);
             localStorage.setItem('nombre', data.nombre);
             localStorage.setItem('usuarioId', data.usuarioId);
+            if (data.primerIngreso !== undefined) {
+                localStorage.setItem('primerIngreso', data.primerIngreso);
+            }
+            const esPrimerIngreso = data.primerIngreso === true || data.primerIngreso === 'true';
             if (data.rol === 'ADMIN') {
                 navigate('/admin/medicos');
             } else if (data.rol === 'MEDICO') {
-                navigate('/medico/gestionCitas');
+                if (data.primerIngreso) {
+                    navigate('/medico/perfil');
+                } else {
+                    navigate('/medico/gestionCitas');
+                }
             } else {
                 if (redirectPath === 'confirmarCita') {
                     const citaState = sessionStorage.getItem('confirmarCitaState');

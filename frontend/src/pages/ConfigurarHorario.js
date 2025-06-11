@@ -122,7 +122,10 @@ export default function ConfigurarHorario() {
         if (horaInicio && horaFin && frecuencia) {
             ok = await crearHorario();
         }
-        if (ok) window.location.href = "/medico/gestionCitas";
+        if (ok) {
+            localStorage.setItem('primerIngreso', 'false');
+            window.location.href = "/medico/gestionCitas";
+        }
     };
 
 

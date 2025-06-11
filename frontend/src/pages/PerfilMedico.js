@@ -43,6 +43,9 @@ export default function PerfilMedico() {
                 return;
             }
             setExito('Perfil actualizado correctamente.');
+            if (localStorage.getItem('primerIngreso') === 'true') {
+                window.location.href = '/medico/configurarHorario';
+            }
         } catch (err) {
             setError('Error al actualizar.');
         }

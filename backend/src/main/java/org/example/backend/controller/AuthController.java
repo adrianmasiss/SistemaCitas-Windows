@@ -46,8 +46,14 @@ public class AuthController {
         usuario.setSesionActiva(true);
         usuarioService.actualizarUsuario(usuario);
         String token = jwtUtils.generateToken(usuario.getUsername(), usuario.getRol());
-        return ResponseEntity.ok(new LoginResponse(token, usuario.getRol(), usuario.getNombre(), usuario.getId()));
-    }
+        return ResponseEntity.ok(
+                new LoginResponse(
+                token,
+                usuario.getRol(),
+                usuario.getNombre(),
+                usuario.getId(),
+                usuario.getPrimerIngreso()
+        ));    }
 
 
     @PostMapping("/logout")

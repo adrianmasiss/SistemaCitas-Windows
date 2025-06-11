@@ -87,6 +87,10 @@ public class HorarioController {
                 h.setDiaSemana(dia.name());
                 horarioService.crearHorario(h);
             }
+            if (Boolean.TRUE.equals(medico.getPrimerIngreso())) {
+                medico.setPrimerIngreso(false);
+                usuarioService.actualizarUsuario(medico);
+            }
             return ResponseEntity.ok("Horarios actualizados");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error al crear horarios: " + e.getMessage());

@@ -5,12 +5,14 @@ public class LoginResponse {
     private String rol;
     private String nombre;
     private Long usuarioId;
+    private Boolean primerIngreso;
 
-    public LoginResponse(String token, String rol, String nombre, Long usuarioId) {
+    public LoginResponse(String token, String rol, String nombre, Long usuarioId, Boolean primerIngreso) {
         this.token = token;
         this.rol = rol;
         this.nombre = nombre;
         this.usuarioId = usuarioId;
+        this.primerIngreso = primerIngreso;
     }
 
     public String getToken() { return token; }
@@ -24,4 +26,7 @@ public class LoginResponse {
 
     public Long getUsuarioId() { return usuarioId; }
     public void setUsuarioId(Long usuarioId) { this.usuarioId = usuarioId; }
+
+    public Boolean getPrimerIngreso() { return primerIngreso; }
+    public void setPrimerIngreso(Boolean primerIngreso) { this.primerIngreso = primerIngreso; }
 }
