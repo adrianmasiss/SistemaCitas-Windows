@@ -7,13 +7,43 @@ export default function ConfirmarCita() {
     const location = useLocation();
     const navigate = useNavigate();
 
-    // Se espera que vengan por location.state o query params
+    // Recibe info por state o por params (como fallback)
     const { medicoId, medicoNombre, medicoFoto, fechaHora, ubicacion } = location.state || {};
 
-    // Envía la confirmación al backend (ajusta endpoint y auth según tu proyecto)
+    // Corrige el formato de la fecha para todos los navegadores
+    const getFechaFormateada = (fechaHora) => {
+        if (!fechaHora) return "";
+        let fh = fechaHora.replace(" ", "T");
+        if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(fh)) fh += ":00";
+        const date = new Date(fh);
+        if (isNaN(date.getTime())) return "Fecha no válida";
+        return date.toLocaleString('es-CR', {
+            year: 'numeric', month: '2-digit', day: '2-digit',
+            hour: '2-digit', minute: '2-digit'
+        });
+    };
+
+    if (!medicoId || !medicoNombre || !fechaHora || !ubicacion) {
+        return (
+            <div className="layout-wrapper">
+                <div className="contenido-principal">
+                    <div className="confirm-cita-wrapper">
+                        <div className="confirm-cita-card" style={{ maxWidth: 350 }}>
+                            <h2>Datos de la cita no disponibles.</h2>
+                            <button className="btn-cancel" onClick={() => navigate('/buscarCita')}>
+                                Volver a buscar cita
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    // Confirmar cita
     const handleConfirm = async (e) => {
         e.preventDefault();
-        const token = localStorage.getItem("token"); // si usas JWT
+        const token = localStorage.getItem("token");
         try {
             const res = await fetch('/api/citas/agendar', {
                 method: 'POST',
@@ -27,64 +57,100 @@ export default function ConfirmarCita() {
                 }),
             });
             if (!res.ok) throw new Error(await res.text());
-            const ct = res.headers.get('content-type') || '';
-            if (ct.includes('application/json')) {
-                await res.json();
-            } else {
-                await res.text();
-            }
-            // Redirige pasando datos de cita y médico
-            navigate('/citaConfirmada', { state: { cita: { fechaHora }, medico: { id: medicoId, nombre: medicoNombre, foto: medicoFoto, localidad: ubicacion } } });
+            navigate('/citaConfirmada', {
+                state: {
+                    medico: { nombre: medicoNombre, foto: medicoFoto, localidad: ubicacion },
+                    cita: { fechaHora }
+                }
+            });
         } catch (err) {
             alert("Error al confirmar cita: " + err.message);
         }
     };
 
     return (
-        <div className="layout-wrapper">
-            <div className="contenido-principal">
-                <div className="confirm-cita-wrapper">
-                    <div className="confirm-cita-card">
-                        <div className="confirm-cita-header">
+        <>
+            <div className="layout-wrapper" style={{ minHeight: "90vh" }}>
+                <div className="contenido-principal">
+                    <div className="confirm-cita-wrapper" style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "65vh" }}>
+                        <div className="confirm-cita-card"
+                             style={{
+                                 maxWidth: 400,
+                                 padding: "2.5rem 2rem",
+                                 boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.09)",
+                                 borderRadius: 20,
+                                 background: "#fff",
+                                 textAlign: "center"
+                             }}>
+                            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, marginBottom: 12 }}>
+                                <h2 style={{
+                                    fontSize: 25,
+                                    color: "#2c3e50",
+                                    margin: 0
+                                }}>Confirmar Cita</h2>
+                            </div>
                             <img
                                 src={medicoFoto && medicoFoto !== "" ? medicoFoto : "/images/profile.png"}
-                                alt="Doctor Photo"
+                                alt="Doctor"
                                 className="doctor-photo"
+                                style={{
+                                    width: 90, height: 90,
+                                    borderRadius: '50%',
+                                    objectFit: 'cover',
+                                    border: '2px solid #2c72de',
+                                    marginBottom: 12
+                                }}
                             />
-                            <h2>{medicoNombre}</h2>
-                        </div>
-                        <div className="confirm-cita-info">
-                            <p>
-                                <i className="fa fa-calendar"></i>
-                                {fechaHora
-                                    ? new Date(fechaHora).toLocaleString('es-CR', {
-                                        year: 'numeric', month: '2-digit', day: '2-digit',
-                                        hour: '2-digit', minute: '2-digit'
-                                    })
-                                    : ''}
-                            </p>
-                            <p>
-                                <i className="fa fa-map-marker-alt"></i>
-                                {ubicacion}
-                            </p>
-                        </div>
-                        <div className="confirm-cita-actions">
-                            <form onSubmit={handleConfirm}>
-                                <button type="submit" className="btn-confirm">
-                                    <i className="fa fa-check"></i> Confirmar
+                            <div style={{ fontWeight: 600, fontSize: 22, margin: "0 0 7px 0", color: "#31456A" }}>
+                                {medicoNombre}
+                            </div>
+                            <div style={{ marginBottom: 15 }}>
+                                <div style={{ color: "#2353a8", fontSize: 17, margin: '8px 0', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7 }}>
+                                    <i className="fa fa-calendar" style={{ color: "#2c72de" }} />
+                                    {getFechaFormateada(fechaHora)}
+                                </div>
+                                <div style={{ color: "#285d7c", fontSize: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+                                    <i className="fa fa-map-marker" style={{ color: "#2ecc71" }} />
+                                    {ubicacion}
+                                </div>
+                            </div>
+                            <div style={{ display: "flex", justifyContent: "center", gap: 15, marginTop: 10 }}>
+                                <form onSubmit={handleConfirm}>
+                                    <button type="submit" className="btn-confirm"
+                                            style={{
+                                                background: "#28a745",
+                                                color: "#fff",
+                                                border: "none",
+                                                borderRadius: 8,
+                                                fontWeight: "bold",
+                                                fontSize: 16,
+                                                padding: "8px 18px",
+                                                cursor: "pointer"
+                                            }}>
+                                        <i className="fa fa-check"></i> Confirmar
+                                    </button>
+                                </form>
+                                <button
+                                    className="btn-cancel"
+                                    style={{
+                                        background: "#e74c3c",
+                                        color: "#fff",
+                                        border: "none",
+                                        borderRadius: 8,
+                                        fontWeight: "bold",
+                                        fontSize: 16,
+                                        padding: "8px 18px",
+                                        cursor: "pointer"
+                                    }}
+                                    onClick={() => navigate('/buscarCita')}
+                                >
+                                    <i className="fa fa-times"></i> Cancelar
                                 </button>
-                            </form>
-                            <button
-                                className="btn-cancel"
-                                style={{ marginLeft: 12 }}
-                                onClick={() => navigate('/buscarCita')}
-                            >
-                                <i className="fa fa-times"></i> Cancelar
-                            </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 }

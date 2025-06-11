@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "../styles.css";
 
 export default function HorarioExtendido({
@@ -13,12 +13,13 @@ export default function HorarioExtendido({
     const location = useLocation();
     const params = new URLSearchParams(location.search);
     const medicoId = params.get("medicoId");
-
     const [medico, setMedico] = useState(initialMedico || null);
     const [espacios, setEspacios] = useState(initialEspacios || []);
     const [offset, setOffset] = useState(1);
     const dias = 7;
     const [loading, setLoading] = useState(false);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         setMedico(initialMedico || null);
@@ -56,6 +57,21 @@ export default function HorarioExtendido({
     const disablePrev =
         propDisablePrev !== undefined ? propDisablePrev : offset <= 1;
     const disableNext = propDisableNext !== undefined ? propDisableNext : false;
+
+    // NUEVA función para reservar cita y navegar a ConfirmarCita con todos los datos
+    const handleReservarCita = (medico, slot) => {
+        navigate('/confirmarCita', {
+            state: {
+                medicoId: medico.id,
+                medicoNombre: medico.nombre,
+                medicoFoto: medico.foto,
+                fechaHora: `${slot.fecha}T${slot.hora}`,
+                ubicacion: medico.localidad,
+                especialidad: medico.especialidad,
+                costoConsulta: medico.costoConsulta
+            }
+        });
+    };
 
     if (!medico || loading) {
         return (
@@ -117,21 +133,34 @@ export default function HorarioExtendido({
                             {slots.length === 0 ? (
                                 <div className="sin-horarios">Sin horarios</div>
                             ) : (
-                                slots.map((slot, idx) => (
+                                slots.map((slot, idx) =>
                                     slot.disponible ? (
-                                        <a
+                                        <button
                                             className="slot-ext"
                                             key={idx}
-                                            href={`/confirmarCita?medicoId=${medico.id}&fechaHora=${slot.fecha}T${slot.hora}`}
+                                            type="button"
+                                            onClick={() => handleReservarCita(medico, slot)}
+                                            style={{
+                                                background: "#36d27a",
+                                                color: "white",
+                                                borderRadius: "11px",
+                                                padding: "7px 18px",
+                                                fontWeight: 600,
+                                                fontSize: "1rem",
+                                                boxShadow: "0 2px 5px rgba(0,150,60,0.06)",
+                                                border: "none",
+                                                cursor: "pointer",
+                                                marginBottom: 4
+                                            }}
                                         >
                                             {slot.horaFormateada || slot.hora}
-                                        </a>
+                                        </button>
                                     ) : (
                                         <span className="slot-ext" key={idx}>
                                             {slot.horaFormateada || slot.hora}
                                         </span>
                                     )
-                                ))
+                                )
                             )}
                         </div>
                     </div>

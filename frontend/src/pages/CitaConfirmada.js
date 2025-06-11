@@ -4,14 +4,13 @@ import Footer from '../components/Footer';
 import { useLocation, Link } from 'react-router-dom';
 
 export default function CitaConfirmada() {
-    // Recibe los datos de la cita por navigation state (o puedes adaptar si usas context/global)
     const location = useLocation();
     const { medico = {}, cita = {} } = location.state || {};
 
-    // Si no hay datos, muestra mensaje (puedes adaptar según tu flujo)
     if (!medico || !cita) {
         return (
             <div className="layout-wrapper">
+                <Header />
                 <div className="contenido-principal">
                     <div className="confirm-cita-wrapper">
                         <div className="confirm-cita-card">
@@ -22,48 +21,70 @@ export default function CitaConfirmada() {
                         </div>
                     </div>
                 </div>
+                <Footer />
             </div>
         );
     }
 
-    // Muestra los datos de la cita confirmada
     return (
         <div className="layout-wrapper">
             <div className="contenido-principal">
-                <div className="confirm-cita-wrapper">
-                    <div className="confirm-cita-card">
-                        <div className="confirm-cita-header">
-                            <img
-                                src={medico.foto && medico.foto !== "" ? medico.foto : '/images/profile.png'}
-                                alt="Doctor Photo"
-                                className="doctor-photo"
-                            />
-                            <h2>
-                                Cita confirmada con el Dr. {medico.nombre}
-                            </h2>
+                <div className="confirm-cita-wrapper" style={{ minHeight: '70vh' }}>
+                    <div className="confirm-cita-card" style={{ maxWidth: 480, padding: "2.8rem 2.4rem" }}>
+                        <img
+                            src={medico.foto && medico.foto !== "" ? medico.foto : '/images/profile.png'}
+                            alt="Doctor"
+                            className="doctor-photo"
+                            style={{
+                                width: 110, height: 110,
+                                borderRadius: '50%',
+                                objectFit: 'cover',
+                                border: '2px solid #2c72de',
+                                marginBottom: 12
+                            }}
+                        />
+                        <h2 style={{
+                            fontSize: 26,
+                            color: "#2c3e50",
+                            fontWeight: "bold",
+                            marginBottom: 18
+                        }}>
+                            Cita confirmada con el Dr. {medico.nombre}
+                        </h2>
+                        <div style={{ color: "#444", fontSize: 18, marginBottom: 8 }}>
+                            <i className="fa fa-calendar" style={{ marginRight: 7, color: "#2c72de" }} />
+                            {cita.fechaHora
+                                ? new Date(cita.fechaHora).toLocaleString('es-CR', {
+                                    year: 'numeric', month: '2-digit', day: '2-digit',
+                                    hour: '2-digit', minute: '2-digit'
+                                })
+                                : 'Sin fecha'}
                         </div>
-                        <div className="confirm-cita-info">
-                            <p>
-                                <i className="fa fa-calendar"></i>
-                                {cita.fechaHora
-                                    ? new Date(cita.fechaHora).toLocaleString('es-CR', {
-                                        year: 'numeric', month: '2-digit', day: '2-digit',
-                                        hour: '2-digit', minute: '2-digit'
-                                    })
-                                    : 'Sin fecha'}
-                            </p>
-                            <p>
-                                <i className="fa fa-location-dot"></i> {medico.localidad}
-                            </p>
-                            <p>
-                                <i className="fa fa-hand-holding-medical"></i> {medico.especialidad}
-                            </p>
-                            <p>
-                                <i className="fa fa-money-bill-wave"></i> ₡{medico.costoConsulta}
-                            </p>
+                        <div style={{ color: "#285d7c", fontSize: 16 }}>
+                            <i className="fa fa-location-dot" style={{ marginRight: 7, color: "#2ecc71" }} />
+                            {medico.localidad}
                         </div>
-                        <div className="confirm-cita-actions" style={{ textAlign: "center" }}>
-                            <Link to="/historicoCitas" className="btn-confirm">
+                        <div style={{ color: "#2c3e50", fontSize: 16, margin: '10px 0 2px 0' }}>
+                            <i className="fa fa-hand-holding-medical" style={{ marginRight: 7, color: "#007bff" }} />
+                            {medico.especialidad}
+                        </div>
+                        <div style={{ color: "#009e52", fontSize: 17, fontWeight: "bold", marginBottom: 18 }}>
+                            <i className="fa fa-money-bill-wave" style={{ marginRight: 7 }} />
+                            ₡{medico.costoConsulta}
+                        </div>
+                        <div style={{ textAlign: "center" }}>
+                            <Link to="/historicoCitas" className="btn-confirm"
+                                  style={{
+                                      background: "#28a745",
+                                      color: "#fff",
+                                      border: "none",
+                                      borderRadius: 8,
+                                      fontWeight: "bold",
+                                      fontSize: 18,
+                                      padding: "10px 24px",
+                                      textDecoration: "none",
+                                      display: "inline-block"
+                                  }}>
                                 <i className="fa fa-calendar-check"></i> Ver mis citas
                             </Link>
                         </div>

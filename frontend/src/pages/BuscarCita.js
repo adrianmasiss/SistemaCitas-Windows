@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function BuscarCita() {
     const [especialidad, setEspecialidad] = useState("");
@@ -6,8 +7,9 @@ function BuscarCita() {
     const [medicos, setMedicos] = useState([]);
     const [loading, setLoading] = useState(false);
     const [horarios, setHorarios] = useState({});
-    const [verHorarios, setVerHorarios] = useState({}); // { medicoId: true/false }
-    const [verMasDias, setVerMasDias] = useState({}); // { medicoId: { fecha: true/false } }
+    const [verHorarios, setVerHorarios] = useState({});
+    const [verMasDias, setVerMasDias] = useState({});
+    const navigate = useNavigate();
 
     // Buscar médicos por filtros
     const buscarMedicos = (e) => {
@@ -45,7 +47,6 @@ function BuscarCita() {
             });
     };
 
-    // Buscar todos al cargar
     useEffect(() => {
         buscarMedicos();
         // eslint-disable-next-line
@@ -58,7 +59,6 @@ function BuscarCita() {
         }));
     };
 
-    // Control individual de ver más/menos por médico y por día
     const handleVerMas = (medicoId, fecha) => {
         setVerMasDias(prev => ({
             ...prev,
@@ -67,6 +67,21 @@ function BuscarCita() {
                 [fecha]: !prev[medicoId]?.[fecha]
             }
         }));
+    };
+
+    // NUEVA función para reservar cita y navegar a ConfirmarCita con todos los datos
+    const handleReservarCita = (medico, slot) => {
+        navigate('/confirmarCita', {
+            state: {
+                medicoId: medico.id,
+                medicoNombre: medico.nombre,
+                medicoFoto: medico.foto,
+                fechaHora: `${slot.fecha}T${slot.hora}`,
+                ubicacion: medico.localidad,
+                especialidad: medico.especialidad,
+                costoConsulta: medico.costoConsulta
+            }
+        });
     };
 
     return (
@@ -145,11 +160,23 @@ function BuscarCita() {
                                                             {mostrar.map((slot, idx) =>
                                                                 <div className={`slot ${slot.disponible ? "disponible" : "reservado"}`} key={idx}>
                                                                     {slot.disponible ? (
-                                                                        <a
-                                                                            href={`/confirmarCita?medicoId=${medico.id}&fechaHora=${slot.fecha}T${slot.hora}`}
+                                                                        <button
+                                                                            type="button"
+                                                                            className="slot-btn"
+                                                                            onClick={() => handleReservarCita(medico, slot)}
+                                                                            style={{
+                                                                                background: "#eaf0fb",
+                                                                                color: "#007bff",
+                                                                                border: "none",
+                                                                                borderRadius: "16px",
+                                                                                padding: "4px 10px",
+                                                                                margin: "3px",
+                                                                                fontWeight: "bold",
+                                                                                cursor: "pointer"
+                                                                            }}
                                                                         >
                                                                             {slot.horaFormateada || slot.hora}
-                                                                        </a>
+                                                                        </button>
                                                                     ) : (
                                                                         <span>{slot.horaFormateada || slot.hora}</span>
                                                                     )}
