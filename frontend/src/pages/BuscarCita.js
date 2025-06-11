@@ -78,8 +78,8 @@ function BuscarCita() {
                 medicoFoto: medico.foto,
                 fechaHora: `${slot.fecha}T${slot.hora}`,
                 ubicacion: medico.localidad,
-                especialidad: medico.especialidad,
-                costoConsulta: medico.costoConsulta
+                medicoEspecialidad: medico.especialidad,
+                medicoCostoConsulta: medico.costoConsulta
             }
         });
     };

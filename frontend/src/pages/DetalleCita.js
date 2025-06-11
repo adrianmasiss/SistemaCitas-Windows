@@ -12,7 +12,6 @@ export default function DetalleCita() {
     if (!cita) {
         return (
             <div className="layout-wrapper">
-                <Header />
                 <div className="contenido-principal">
                     <div className="confirm-cita-wrapper">
                         <div className="confirm-cita-card">
@@ -23,7 +22,6 @@ export default function DetalleCita() {
                         </div>
                     </div>
                 </div>
-                <Footer />
             </div>
         );
     }
@@ -32,7 +30,6 @@ export default function DetalleCita() {
 
     return (
         <div className="layout-wrapper">
-            <Header />
             <div className="contenido-principal">
                 <div className="confirm-cita-wrapper">
                     <div className="confirm-cita-card">
@@ -86,7 +83,6 @@ export default function DetalleCita() {
                     </div>
                 </div>
             </div>
-            <Footer />
         </div>
     );
 }

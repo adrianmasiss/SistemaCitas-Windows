@@ -16,6 +16,7 @@ import ConfirmarCita from './pages/ConfirmarCita';
 import CitaConfirmada from './pages/CitaConfirmada';
 import HistoricoCitas from './pages/HistoricoCitas';
 import PerfilMedico from './pages/PerfilMedico';
+import DetalleCita from './pages/DetalleCita';
 
 
 
@@ -43,6 +44,7 @@ function App() {
                     <Route path="/citaConfirmada" element={<CitaConfirmada />} />
                     <Route path="/historicoCitas" element={<HistoricoCitas />} />
                     <Route path="/medico/perfil" element={<PerfilMedico />} />
+                    <Route path="/detalleCita" element={<DetalleCita />} />
                     {/* Aquí irán más páginas */}
                 </Routes>
             </main>

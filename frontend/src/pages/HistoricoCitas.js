@@ -41,6 +41,32 @@ export default function HistoricoCitas() {
         fetchCitas();
     };
 
+    const parseFechaHora = (fh) => {
+        if (!fh) return new Date(NaN);
+        if (Array.isArray(fh)) {
+            const [y, m = 1, d = 1, h = 0, mi = 0, s = 0] = fh;
+            return new Date(y, m - 1, d, h, mi, s);
+        }
+        if (typeof fh === 'string') {
+            const match = fh.match(/^(\d{4}),(\d{1,2}),(\d{1,2})T(\d{1,2}),(\d{1,2})$/);
+            if (match) {
+                let [, year, month, day, hour, minute] = match;
+                month = month.padStart(2, '0');
+                day = day.padStart(2, '0');
+                hour = hour.padStart(2, '0');
+                minute = minute.padStart(2, '0');
+                return new Date(`${year}-${month}-${day}T${hour}:${minute}`);
+            }
+        }
+        return new Date(fh);
+    };
+
+    const formatFechaHora = (fh) => {
+        const date = parseFechaHora(fh);
+        return isNaN(date.getTime()) ? 'Fecha no válida' : date.toLocaleString('es-CR');
+    };
+
+
     // Ver detalle
     const verDetalle = (cita) => {
         navigate('/detalleCita', { state: { cita } });
@@ -96,7 +122,7 @@ export default function HistoricoCitas() {
                             <tbody>
                             {citas.map(cita => (
                                 <tr key={cita.id}>
-                                    <td>{new Date(cita.fechaHora).toLocaleString('es-CR')}</td>
+                                    <td>{formatFechaHora(cita.fechaHora)}</td>
                                     <td>{cita.medico?.nombre}</td>
                                     <td>
                                         <span className={`badge-estado badge-${cita.estado}`}>{cita.estado}</span>
