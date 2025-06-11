@@ -25,6 +25,14 @@ public class PerfilController {
         Usuario usuario = usuarioService.buscarPorId(usuarioId).orElse(null);
         if (usuario == null) return ResponseEntity.notFound().build();
 
+        if (datosActualizados.getFoto() != null &&
+                datosActualizados.getFoto().length() > Usuario.MAX_FOTO_URL_LENGTH) {
+            return ResponseEntity.badRequest().body(
+                    "La URL de la foto es demasiado larga. Máximo " +
+                            Usuario.MAX_FOTO_URL_LENGTH + " caracteres.");
+        }
+
+
         // Si se cambia el username, validar que no esté tomado
         if (datosActualizados.getUsername() != null && !datosActualizados.getUsername().equals(usuario.getUsername())) {
             if (usuarioService.existeUsername(datosActualizados.getUsername())) {
@@ -42,5 +50,18 @@ public class PerfilController {
         usuarioService.actualizarUsuario(usuario);
 
         return ResponseEntity.ok("Perfil actualizado correctamente");
+    }
+
+    @PutMapping("/{usuarioId}/finalizarPrimerIngreso")
+    public ResponseEntity<?> finalizarPrimerIngreso(@PathVariable Long usuarioId) {
+        Usuario usuario = usuarioService.buscarPorId(usuarioId).orElse(null);
+        if (usuario == null) {
+            return ResponseEntity.notFound().build();
+        }
+        if (Boolean.TRUE.equals(usuario.getPrimerIngreso())) {
+            usuario.setPrimerIngreso(false);
+            usuarioService.actualizarUsuario(usuario);
+        }
+        return ResponseEntity.ok("Primer ingreso completado");
     }
 }

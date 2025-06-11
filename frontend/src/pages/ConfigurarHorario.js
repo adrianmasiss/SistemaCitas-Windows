@@ -123,6 +123,16 @@ export default function ConfigurarHorario() {
             ok = await crearHorario();
         }
         if (ok) {
+            const medicoId = localStorage.getItem('usuarioId');
+            const token = localStorage.getItem('token');
+            try {
+                await fetch(`/api/perfil/${medicoId}/finalizarPrimerIngreso`, {
+                    method: 'PUT',
+                    headers: token ? { Authorization: `Bearer ${token}` } : {}
+                });
+            } catch (err) {
+                // Si falla, simplemente continuamos
+            }
             localStorage.setItem('primerIngreso', 'false');
             window.location.href = "/medico/gestionCitas";
         }

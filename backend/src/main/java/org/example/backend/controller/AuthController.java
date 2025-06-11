@@ -91,6 +91,12 @@ public class AuthController {
     }
     @PostMapping("/registerMedico")
     public ResponseEntity<?> registrarMedico(@RequestBody RegistroMedicoDTO dto) {
+        if (dto.getFoto() != null &&
+                dto.getFoto().length() > Usuario.MAX_FOTO_URL_LENGTH) {
+            return ResponseEntity.badRequest().body(
+                    "La URL de la foto es demasiado larga. Máximo " +
+                            Usuario.MAX_FOTO_URL_LENGTH + " caracteres.");
+        }
         // Crear el usuario médico
         Usuario usuario = new Usuario();
         usuario.setNombre(dto.getNombre());

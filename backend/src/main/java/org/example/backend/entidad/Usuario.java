@@ -6,6 +6,8 @@ import java.io.Serializable;
 
 @Entity
 public class Usuario implements Serializable {
+    public static final int MAX_FOTO_URL_LENGTH = 1000;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -144,6 +146,7 @@ public class Usuario implements Serializable {
     private String especialidad;
     private Double costoConsulta;
     private String localidad;
+    @Column(length = MAX_FOTO_URL_LENGTH)
     private String foto;
     private String presentacion;
 
