@@ -157,31 +157,22 @@ function BuscarCita() {
                                                         <p>No se encontraron resultados para tu búsqueda.</p>
                                                     ) : (
                                                         <>
-                                                            {mostrar.map((slot, idx) =>
-                                                                <div className={`slot ${slot.disponible ? "disponible" : "reservado"}`} key={idx}>
-                                                                    {slot.disponible ? (
-                                                                        <button
-                                                                            type="button"
-                                                                            className="slot-btn"
-                                                                            onClick={() => handleReservarCita(medico, slot)}
-                                                                            style={{
-                                                                                background: "#eaf0fb",
-                                                                                color: "#007bff",
-                                                                                border: "none",
-                                                                                borderRadius: "16px",
-                                                                                padding: "4px 10px",
-                                                                                margin: "3px",
-                                                                                fontWeight: "bold",
-                                                                                cursor: "pointer"
-                                                                            }}
-                                                                        >
-                                                                            {slot.horaFormateada || slot.hora}
-                                                                        </button>
-                                                                    ) : (
-                                                                        <span>{slot.horaFormateada || slot.hora}</span>
-                                                                    )}
-                                                                </div>
-                                                            )}
+                                                        {mostrar.map((slot, idx) =>
+                                                                slot.disponible ? (
+                                                                    <button
+                                                                        type="button"
+                                                                        className="slot-ext"
+                                                                        key={idx}
+                                                                        onClick={() => handleReservarCita(medico, slot)}
+                                                                    >
+                                                                        {slot.horaFormateada || slot.hora}
+                                                                    </button>
+                                                                ) : (
+                                                                    <span className="slot-ext reservado" key={idx}>
+                                                                        {slot.horaFormateada || slot.hora}
+                                                                    </span>
+                                                                )
+                                                        )}
                                                             {lista.length > 3 && (
                                                                 <button
                                                                     type="button"

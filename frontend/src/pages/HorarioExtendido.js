@@ -75,12 +75,11 @@ export default function HorarioExtendido({
 
     if (!medico || loading) {
         return (
-            <div style={{ textAlign: "center", marginTop: "2rem" }}>
+            <div style={{textAlign: "center", marginTop: "2rem"}}>
                 Cargando datos del médico...
             </div>
         );
     }
-
     return (
         <div className="horario-extendido-wrapper">
             {/* Info del médico */}
@@ -95,15 +94,31 @@ export default function HorarioExtendido({
                     className="doctor-img"
                 />
                 <div>
-                    <b style={{ color: "#2c3e50", fontSize: "1.1rem" }}>
+                    <div style={{
+                        fontSize: "1.6rem",
+                        fontWeight: "700",
+                        color: "#2c3e50",
+                        marginBottom: "0.3rem",
+                        display: "flex",
+                        alignItems: "center"
+                    }}>
+                        <i className="fa-solid fa-user-doctor"
+                           style={{marginRight: 10, fontSize: "1.5rem", color: "#3498db"}}></i>
                         {medico.nombre}
-                    </b>
-                    <br />
-                    <span style={{ color: "#009e52", fontWeight: "bold" }}>
+                    </div>
+
+                    <div style={{marginTop: 6, color: "#009e52", fontWeight: "bold"}}>
+                        <i className="fa-solid fa-hand-holding-dollar" style={{marginRight: 6}}></i>
                         ₡{medico.costoConsulta}
-                    </span>
-                    <div style={{ color: "#555" }}>{medico.especialidad}</div>
-                    <div style={{ color: "#777", marginTop: 4 }}>{medico.localidad}</div>
+                    </div>
+                    <div style={{color: "#555", marginTop: 6}}>
+                        <i className="fa-solid fa-briefcase-medical" style={{marginRight: 6}}></i>
+                        {medico.especialidad}
+                    </div>
+                    <div style={{color: "#777", marginTop: 6}}>
+                        <i className="fa-solid fa-map-marker-alt" style={{marginRight: 6}}></i>
+                        {medico.localidad}
+                    </div>
                 </div>
             </div>
 
@@ -116,7 +131,7 @@ export default function HorarioExtendido({
                     className="btn-nav"
                     onClick={handleNext}
                     disabled={disableNext}
-                    style={{ marginLeft: 8 }}
+                    style={{marginLeft: 8}}
                 >
                     Next →
                 </button>
@@ -124,7 +139,7 @@ export default function HorarioExtendido({
 
             {/* Tarjetas de horarios */}
             <div className="horario-extendido-cards">
-                {espacios.map(({ fecha, slots }) => (
+                {espacios.map(({fecha, slots}) => (
                     <div className="horario-card" key={fecha}>
                         <div className="horario-card-header">
                             {fecha.split("-").reverse().join("/")}
@@ -156,9 +171,9 @@ export default function HorarioExtendido({
                                             {slot.horaFormateada || slot.hora}
                                         </button>
                                     ) : (
-                                        <span className="slot-ext" key={idx}>
-                                            {slot.horaFormateada || slot.hora}
-                                        </span>
+                                        <span className="slot-ext reservado" key={idx}>
+                                        {slot.horaFormateada || slot.hora}
+                                    </span>
                                     )
                                 )
                             )}

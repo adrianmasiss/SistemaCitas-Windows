@@ -142,7 +142,7 @@ export default function ConfigurarHorario() {
     return (
         <div className="layout-wrapper">
             <div className="contenido-principal">
-                <div className="contenedor">
+                <div className="contenedor-horario">
                     <h1>🗓️ Configurar Horario Laboral</h1>
                     <form onSubmit={handleSubmit}>
                         <label>Día de Inicio de Trabajo:</label>
@@ -158,11 +158,12 @@ export default function ConfigurarHorario() {
                             ))}
                         </select>
                         <label>Hora de Inicio:</label>
-                        <input type="time" value={horaInicio} onChange={e => setHoraInicio(e.target.value)} required />
+                        <input type="time" value={horaInicio} onChange={e => setHoraInicio(e.target.value)} required/>
                         <label>Hora de Fin:</label>
-                        <input type="time" value={horaFin} onChange={e => setHoraFin(e.target.value)} required />
+                        <input type="time" value={horaFin} onChange={e => setHoraFin(e.target.value)} required/>
                         <label>Frecuencia (minutos):</label>
-                        <input type="number" value={frecuencia} onChange={e => setFrecuencia(e.target.value)} placeholder="Ej. 30" required />
+                        <input type="number" value={frecuencia} onChange={e => setFrecuencia(e.target.value)}
+                               placeholder="Ej. 30" required/>
                         <button type="submit">Aplicar horario a rango seleccionado</button>
                     </form>
 
@@ -171,10 +172,10 @@ export default function ConfigurarHorario() {
                         <table>
                             <thead>
                             <tr>
-                                <th>Día</th>
-                                <th>Inicio</th>
-                                <th>Fin</th>
-                                <th>Frecuencia</th>
+                                <th><i className="fa-solid fa-calendar-day"></i> Día</th>
+                                <th><i className="fa-regular fa-clock"></i> Inicio</th>
+                                <th><i className="fa-regular fa-clock"></i> Fin</th>
+                                <th><i className="fa-solid fa-stopwatch"></i> Frecuencia</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -192,7 +193,7 @@ export default function ConfigurarHorario() {
 
                     {error && <div className="error">{error}</div>}
 
-                    <form onSubmit={handleFinalizar} style={{ textAlign: "center", marginTop: "2rem" }}>
+                    <form onSubmit={handleFinalizar} style={{textAlign: "center", marginTop: "2rem"}}>
                         <button className="btn-finalizar" type="submit">✅ Finalizar y ver citas</button>
                     </form>
                 </div>
