@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.*;
+import org.example.backend.dto.MedicoBusquedaDTO;
 
 @RestController
 @RequestMapping("/api/horario-extendido")
@@ -35,7 +36,7 @@ public class HorarioExtendidoController {
         Map<String, Object> resp = new HashMap<>();
         if (medico == null) return resp;
 
-        resp.put("medico", medico);
+        resp.put("medico", new MedicoBusquedaDTO(medico));
 
         LocalDate fechaBase = LocalDate.now().plusDays(offset);
         // *** Nuevo método: devuelve todos los días aunque estén vacíos ***

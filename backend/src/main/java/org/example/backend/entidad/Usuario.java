@@ -1,7 +1,7 @@
 package org.example.backend.entidad;
 
 import jakarta.persistence.*;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 
 @Entity
@@ -136,6 +136,7 @@ public class Usuario implements Serializable {
     }
 
     private String nombre;
+    @JsonIgnore
     private String clave;
     private String rol;
     private Boolean aprobado;

@@ -5,6 +5,7 @@ import org.example.backend.servicio.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.example.backend.dto.MedicoAdminDTO;
 
 import java.util.List;
 
@@ -16,8 +17,10 @@ public class AdminController {
     private UsuarioService usuarioService;
 
     @GetMapping("/medicos")
-    public List<Usuario> listarMedicos() {
-        return usuarioService.buscarTodosLosMedicos();
+    public List<MedicoAdminDTO> listarMedicos() {
+        return usuarioService.buscarTodosLosMedicos().stream()
+                .map(MedicoAdminDTO::new)
+                .toList();
     }
 
     @PostMapping("/aprobar")
